@@ -1,3 +1,2 @@
 # Jet-Fighter
-A fun fighter game. 
-Felix
+A fun fighter game. ✈️
