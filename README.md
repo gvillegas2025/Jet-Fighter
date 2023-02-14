@@ -1,2 +1,2 @@
 # Jet-Fighter
-A fun game. 
+A fun fighter game. 
