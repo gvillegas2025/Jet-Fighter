@@ -4,6 +4,10 @@ import turtle
 # Functions
 
 # Constants
+RIGHT_EDGE= 400
+LEFT_EDGE = -400
+BOTTOM_EDGE = -400
+TOP_EDGE = 400
 
 # Global Variables
 
