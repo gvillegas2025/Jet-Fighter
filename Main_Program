@@ -43,7 +43,7 @@ TOP_EDGE = 400
 screen = Screen()
 screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
-turtle.bgpic(picname="Sky")
+turtle.bgpic(picname="Sky.gif")
 
 # Turtles
 jet1 = Turtle()
