@@ -21,10 +21,12 @@ screen.bgcolor("skyblue")
 jet1 = Turtle()
 jet1.shape("triangle")
 jet1.color("black")
+jet1.setheading(100)
 
 jet2 = Turtle()
 jet2.shape("triangle")
 jet2.color("green")
+jet2.setheading(-100)
 
 # Game Loop
 while(True):
