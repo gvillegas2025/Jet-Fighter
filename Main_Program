@@ -3,7 +3,34 @@ import turtle
 from turtle import *
 
 # Functions
+def movement():
+    turtle.onkey(turn_left1,"Left")
+    turtle.onkey(turn_right1,"Right")
+    turtle.onkey(forward1,"Up")
+    turtle.onkey(shoot1,"Down")
+    
+    turtle.onkey(turn_left2,"a")
+    turtle.onkey(turn_right2,"d")
+    turtle.onkey(forward2,"w")
+    turtle.onkey(shoot2,"s")
 
+def turn_left1():
+    jet1.left(15)
+def turn_right1():
+    jet1.right(15)
+def forward1():
+    jet1.forward(10)
+def shoot1():
+    return
+
+def turn_left2():
+    jet1.left(15)
+def turn_right2():
+    jet1.right(15)
+def forward2():
+    jet1.forward(10)
+def shoot2():
+    return
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -22,15 +49,18 @@ jet1 = Turtle()
 turtle.addshape(name="Jet.gif", shape=None) 
 jet1.shape("Jet.gif") 
 jet1.color("black")
-jet1.setheading(100)
+jet1.right(100)
 
 jet2 = Turtle()
 turtle.addshape(name="Jet.gif", shape=None)
 jet2.shape("Jet.gif")
 jet2.color("green")
-jet2.setheading(-100)
+jet2.right(-100)
 
-
+screen.tracer(0)
 # Game Loop
 while(True):
-    jet1.forward(10) 
+    screen.update()
+    turtle.listen()
+    movement()
+    
