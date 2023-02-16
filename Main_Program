@@ -52,8 +52,8 @@ jet1.shape("Jet.gif")
 jet1.color("black")
 
 jet2 = Turtle()
-turtle.addshape(name="Jet.gif", shape=None)
-jet2.shape("Jet.gif")
+turtle.addshape(name="Jet2.gif", shape=None)
+jet2.shape("Jet2.gif")
 jet2.color("green")
 
 
