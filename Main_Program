@@ -1,5 +1,6 @@
 #Jet Fighter
 import turtle
+from turtle import *
 
 # Functions
 
@@ -11,7 +12,17 @@ TOP_EDGE = 400
 
 # Global Variables
 
+#screen
+screen = Screen()
+screen.title("Jet Fighter")
+screen.bgcolor("skyblue")
+
 # Turtles
+jet1 = Turtle()
+jet1.shape("triangle")
+
+jet2 = Turtle()
+jet2.shape("turtle")
 
 # Game Loop
 while(True):
