@@ -2,9 +2,6 @@
 import turtle
 from turtle import *
 
-#Importing Image of Jet 
-turtle.addshape(name="Jet.gif", shape=None) 
-
 # Functions
 
 # Constants
@@ -22,15 +19,18 @@ screen.bgcolor("skyblue")
 
 # Turtles
 jet1 = Turtle()
-jet1.shape("triangle")
+turtle.addshape(name="Jet.gif", shape=None) 
+jet1.shape("Jet.gif") 
 jet1.color("black")
 jet1.setheading(100)
 
 jet2 = Turtle()
-jet2.shape("triangle")
+turtle.addshape(name="Jet.gif", shape=None)
+jet2.shape("Jet.gif")
 jet2.color("green")
 jet2.setheading(-100)
 
+
 # Game Loop
-while(True): 
-    
+while(True):
+    jet1.forward(10) 
