@@ -28,7 +28,7 @@ def turn_left2():
 def turn_right2():
     jet2.right(30)
 def forward2():
-    jet2.forward(10)
+    jet2.forward(30)
 def shoot2():
     return
 # Constants
