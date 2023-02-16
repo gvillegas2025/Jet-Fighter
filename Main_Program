@@ -24,11 +24,11 @@ def shoot1():
     return
 
 def turn_left2():
-    jet1.left(15)
+    jet2.left(15)
 def turn_right2():
-    jet1.right(15)
+    jet2.right(15)
 def forward2():
-    jet1.forward(10)
+    jet2.forward(10)
 def shoot2():
     return
 # Constants
@@ -63,4 +63,5 @@ while(True):
     screen.update()
     turtle.listen()
     movement()
-    
+    jet1.shape("Jet.gif") 
+    jet2.shape("Jet.gif")
