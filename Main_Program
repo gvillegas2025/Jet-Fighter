@@ -15,18 +15,18 @@ def movement():
     turtle.onkey(shoot2,"s")
 
 def turn_left1():
-    jet1.left(15)
+    jet1.left(30)
 def turn_right1():
-    jet1.right(15)
+    jet1.right(30)
 def forward1():
-    jet1.forward(10)
+    jet1.forward(30)
 def shoot1():
     return
 
 def turn_left2():
-    jet2.left(15)
+    jet2.left(30)
 def turn_right2():
-    jet2.right(15)
+    jet2.right(30)
 def forward2():
     jet2.forward(10)
 def shoot2():
