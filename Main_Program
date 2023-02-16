@@ -2,6 +2,9 @@
 import turtle
 from turtle import *
 
+#Importing Image of Jet 
+turtle.addshape(name="Jet.gif", shape=None) 
+
 # Functions
 
 # Constants
