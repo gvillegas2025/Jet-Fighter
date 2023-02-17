@@ -32,7 +32,7 @@ def turn_right1():
     if jetturningangle <= 11:
         jetturningangle = jetturningangle+1
     if jetturningangle == 12:
-        jetturningangle = 1
+        jetturningangle = 0
     jet1.right(30)
     turtle.addshape(name=jet1turn[jetturningangle], shape=None) 
     jet1.shape(jet1turn[jetturningangle])
