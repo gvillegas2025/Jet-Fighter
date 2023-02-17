@@ -4,6 +4,7 @@ from turtle import *
 
 # Functions
 def movement():
+    jet1.forward(5)
     turtle.onkey(turn_left1,"Left")
     turtle.onkey(turn_right1,"Right")
     turtle.onkey(forward1,"Up")
