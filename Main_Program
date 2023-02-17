@@ -1,4 +1,4 @@
-#Jet Fighter
+5#Jet Fighter
 import turtle
 from turtle import *
 
@@ -15,20 +15,20 @@ def movement():
     turtle.onkey(shoot2,"s")
 
 def turn_left1():
-    jet1.left(30)
+    jet1.left(HEADING_STEP)
 def turn_right1():
-    jet1.right(30)
+    jet1.right(HEADING_STEP)
 def forward1():
-    jet1.forward(30)
+    jet1.forward(FORWARD_SPEED)
 def shoot1():
     return
 
 def turn_left2():
-    jet2.left(30)
+    jet2.left(HEADING_STEP)
 def turn_right2():
-    jet2.right(30)
+    jet2.right(HEADING_STEP)
 def forward2():
-    jet2.forward(30)
+    jet2.forward(FORWARD_SPEED)
 def shoot2():
     return
 # Constants
@@ -36,6 +36,8 @@ RIGHT_EDGE= 400
 LEFT_EDGE = -400
 BOTTOM_EDGE = -400
 TOP_EDGE = 400
+HEADING_STEP = 30
+FORWARD_SPEED = 10
 
 # Global Variables
 
@@ -43,19 +45,19 @@ TOP_EDGE = 400
 screen = Screen()
 screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
-turtle.bgpic(picname="Sky.gif")
 
 # Turtles
 jet1 = Turtle()
-turtle.addshape(name="Jet.gif", shape=None) 
-jet1.shape("Jet.gif") 
+turtle.addshape(name="Jet0.gif", shape=None) 
+jet1.shape("Jet0.gif") 
 jet1.color("black")
+jet1.right(100)
 
 jet2 = Turtle()
-turtle.addshape(name="Jet2.gif", shape=None)
-jet2.shape("Jet2.gif")
+turtle.addshape(name="Jet0.gif", shape=None)
+jet2.shape("Jet0.gif")
 jet2.color("green")
-
+jet2.right(-100)
 
 screen.tracer(0)
 # Game Loop
@@ -63,4 +65,5 @@ while(True):
     screen.update()
     turtle.listen()
     movement()
- 
+    jet1.shape("Jet0.gif") 
+    jet2.shape("Jet0.gif")
