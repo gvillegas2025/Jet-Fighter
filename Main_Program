@@ -63,7 +63,7 @@ LEFT_EDGE = -400
 BOTTOM_EDGE = -400
 TOP_EDGE = 400
 HEADING_STEP = 30
-FORWARD_SPEED = 10
+FORWARD_SPEED = 5
 
 # Global Variables
 jetturningangle = 0
