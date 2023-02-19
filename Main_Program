@@ -4,15 +4,16 @@ from turtle import *
 
 # Functions
 def movement():
-    jet1.forward(5)
+    jet1.forward(FORWARD_SPEED)
     turtle.onkey(turn_left1,"Left")
     turtle.onkey(turn_right1,"Right")
     turtle.onkey(forward1,"Up")
-    turtle.onkey(shoot1,"Down") 
+    turtle.onkey(shoot1,"Down")
+    
     turtle.onkey(turn_left2,"a")
     turtle.onkey(turn_right2,"d")
     turtle.onkey(forward2,"w")
-    turtle.onkey(shoot2,"space")
+    turtle.onkey(shoot2,"s")
 
 def turn_left1():
     global jetturningangle, ltd
@@ -24,7 +25,7 @@ def turn_left1():
     else:
         jetturningangle = jetturningangle-1
         
-    jet1.left(30)
+    jet1.left(HEADING_STEP)
     turtle.addshape(name=jet1turn[jetturningangle], shape=None) 
     jet1.shape(jet1turn[jetturningangle])
     
@@ -34,13 +35,13 @@ def turn_right1():
         jetturningangle = jetturningangle+1
     if jetturningangle == 12:
         jetturningangle = 0
-    jet1.right(30)
+    jet1.right(HEADING_STEP)
     turtle.addshape(name=jet1turn[jetturningangle], shape=None) 
     jet1.shape(jet1turn[jetturningangle])
     
 
 def forward1():
-    jet1.forward(30)
+    jet1.forward(FORWARD_SPEED)
 
 def shoot1():
     return
@@ -48,11 +49,11 @@ def shoot1():
 
 
 def turn_left2():
-    jet2.left(30)
+    jet2.left(HEADING_STEP)
 def turn_right2():
-    jet2.right(30)
+    jet2.right(HEADING_STEP)
 def forward2():
-    jet2.forward(30)
+    jet2.forward(FORWARD_SPEED)
 def shoot2():
     return
 
@@ -61,6 +62,8 @@ RIGHT_EDGE= 400
 LEFT_EDGE = -400
 BOTTOM_EDGE = -400
 TOP_EDGE = 400
+HEADING_STEP = 30
+FORWARD_SPEED = 10
 
 # Global Variables
 jetturningangle = 0
@@ -74,20 +77,22 @@ screen = Screen()
 screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
 turtle.bgpic(picname="Sky.gif")
+screen.tracer(0)
 
 # Turtles
 jet1 = Turtle()
-turtle.addshape(name="Jet.gif", shape=None) 
-jet1.shape("Jet.gif") 
+turtle.addshape(name="Jet0.gif", shape=None) 
+jet1.shape("Jet0.gif") 
 jet1.color("black")
+jet1.setx(100)
 
 jet2 = Turtle()
-turtle.addshape(name="Jet.gif", shape=None)
-jet2.shape("Jet.gif")
+turtle.addshape(name="Jet0.gif", shape=None)
+jet2.shape("Jet0.gif")
 jet2.color("green")
+jet2.setx(-100)
 
 
-screen.tracer(0)
 # Game Loop
 while(True):
     screen.update()
