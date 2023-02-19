@@ -37,8 +37,7 @@ def turn_right1():
         jetturningangle = 0
     jet1.right(HEADING_STEP)
     turtle.addshape(name=jet1turn[jetturningangle], shape=None) 
-    jet1.shape(jet1turn[jetturningangle])
-    
+    jet1.shape(jet1turn[jetturningangle])    
 
 def forward1():
     jet1.forward(FORWARD_SPEED)
@@ -65,6 +64,7 @@ TOP_EDGE = 400
 HEADING_STEP = 30
 FORWARD_SPEED = 5
 
+
 # Global Variables
 jetturningangle = 0
 ltd = 0
@@ -72,7 +72,7 @@ ltd = 0
 #lists
 jet1turn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
 
-#screen
+# Screen
 screen = Screen()
 screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
@@ -92,9 +92,10 @@ jet2.shape("Jet0.gif")
 jet2.color("green")
 jet2.setx(-100)
 
-
 # Game Loop
 while(True):
     screen.update()
     turtle.listen()
     movement()
+
+# Make sure yall have all the rotations of the plane downloaded on your computer 
