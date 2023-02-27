@@ -4,6 +4,8 @@ from turtle import *
 
 # Functions
 def movement():
+    turtle.onkey(pause,"p")
+    
     jet1.forward(FORWARD_SPEED)
     turtle.onkey(turn_left1,"Left")
     turtle.onkey(turn_right1,"Right")
@@ -90,10 +92,12 @@ turtle.addshape(name="Jet0.gif", shape=None)
 jet2.shape("Jet0.gif")
 jet2.setx(-100)
 
+paused = False
 # Game Loop
 while(True):
     screen.update()
     turtle.listen()
-    movement()
+    if not (paused):
+        movement()
 
 # Make sure yall have all the rotations of the plane downloaded on your computer 
