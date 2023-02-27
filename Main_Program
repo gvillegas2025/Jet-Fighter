@@ -66,6 +66,13 @@ def score_board():
     
     score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
 
+def pause():
+   global paused
+   if (paused == True):
+      paused = False
+   elif (paused == False):
+      paused = True
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
