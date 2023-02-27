@@ -90,9 +90,25 @@ def turn_left2():
     
 def forward2():
     fighter.forward(FORWARD_SPEED)
+
 def shoot2():
     return
 
+def score_board():
+    global p1,p2
+    jet_prompt = "jet: " + str(p1)
+    fighter_prompt = "fighter: " + str(p2)
+    score_prompt = jet_prompt + fighter_prompt
+    
+    score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
+    
+def pause():
+   global paused
+   if (paused == True):
+      paused = False
+   elif (paused == False):
+      paused = True
+      
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -135,10 +151,12 @@ fighter.setx(-100)
 fighter.left(180)
 
 
+paused = False
 # Game Loop
 while(True):
     screen.update()
     turtle.listen()
-    movement()
+    if not (paused):
+        movement()
 
 # Make sure yall have all the rotations of the plane downloaded on your computer 
