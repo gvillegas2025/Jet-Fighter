@@ -4,6 +4,7 @@ from turtle import *
 
 # Functions
 def movement():
+    jet1.forward(FORWARD_SPEED)
     turtle.onkey(turn_left1,"Left")
     turtle.onkey(turn_right1,"Right")
     turtle.onkey(forward1,"Up")
@@ -15,13 +16,36 @@ def movement():
     turtle.onkey(shoot2,"s")
 
 def turn_left1():
+    global jetturningangle, ltd
+    ltd = ltd+1
+    if ltd == 1 and jetturningangle == 0:
+        jetturningangle = 11
+    if jetturningangle == 0:
+        jetturningangle = 11
+    else:
+        jetturningangle = jetturningangle-1
+        
     jet1.left(HEADING_STEP)
+    turtle.addshape(name=jet1turn[jetturningangle], shape=None) 
+    jet1.shape(jet1turn[jetturningangle])
+    
 def turn_right1():
+    global jetturningangle
+    if jetturningangle <= 11:
+        jetturningangle = jetturningangle+1
+    if jetturningangle == 12:
+        jetturningangle = 0
     jet1.right(HEADING_STEP)
+    turtle.addshape(name=jet1turn[jetturningangle], shape=None) 
+    jet1.shape(jet1turn[jetturningangle])    
+
 def forward1():
     jet1.forward(FORWARD_SPEED)
+
 def shoot1():
     return
+
+
 
 def turn_left2():
     jet2.left(HEADING_STEP)
@@ -31,20 +55,28 @@ def forward2():
     jet2.forward(FORWARD_SPEED)
 def shoot2():
     return
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
 BOTTOM_EDGE = -400
 TOP_EDGE = 400
 HEADING_STEP = 30
-FORWARD_SPEED = 10
+FORWARD_SPEED = 5
+
 
 # Global Variables
+jetturningangle = 0
+ltd = 0
+
+#lists
+jet1turn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
 
 # Screen
 screen = Screen()
 screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
+turtle.bgpic(picname="Sky.gif")
 screen.tracer(0)
 
 # Turtles
@@ -65,7 +97,5 @@ while(True):
     screen.update()
     turtle.listen()
     movement()
-    jet1.shape("Jet0.gif") 
-    jet2.shape("Jet0.gif")
 
 # Make sure yall have all the rotations of the plane downloaded on your computer 
