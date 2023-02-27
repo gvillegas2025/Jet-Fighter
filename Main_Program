@@ -83,13 +83,11 @@ screen.tracer(0)
 jet1 = Turtle()
 turtle.addshape(name="Jet0.gif", shape=None) 
 jet1.shape("Jet0.gif") 
-jet1.color("black")
 jet1.setx(100)
 
 jet2 = Turtle()
 turtle.addshape(name="Jet0.gif", shape=None)
 jet2.shape("Jet0.gif")
-jet2.color("green")
 jet2.setx(-100)
 
 # Game Loop
