@@ -122,6 +122,13 @@ FORWARD_SPEED = 6
 jetturningangle = 0
 jltd = 0
 
+#scoreboard
+score=turtle.Turtle()
+score.speed(0)
+score.penup()
+score.hideturtle()
+score.goto (0,260)
+
 fighterturningangle = 0
 fltd = 0
 frtd = 0
