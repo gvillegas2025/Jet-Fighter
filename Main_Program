@@ -58,6 +58,13 @@ def forward2():
 def shoot2():
     return
 
+def pause():
+   global paused
+   if (paused == True):
+      paused = False
+   elif (paused == False):
+      paused = True
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
