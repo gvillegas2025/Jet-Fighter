@@ -58,6 +58,14 @@ def forward2():
 def shoot2():
     return
 
+def score_board():
+    global p1,p2
+    jet_prompt = "jet: " + str(p1)
+    fighter_prompt = "fighter: " + str(p2)
+    score_prompt = jet_prompt + fighter_prompt
+    
+    score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -70,9 +78,6 @@ FORWARD_SPEED = 5
 # Global Variables
 jetturningangle = 0
 ltd = 0
-jet = 0
-fighter = 0
-
 
 #scoreboard
 score=turtle.Turtle()
@@ -80,9 +85,6 @@ score.speed(0)
 score.penup()
 score.hideturtle()
 score.goto (0,260)
-score.write ("jet: 0 fighter: 0, align="center", font=("Roboto", 20, "bold"))
-
-
 
 #lists
 jet1turn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
