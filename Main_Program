@@ -17,6 +17,38 @@ def movement():
     turtle.onkey(forward2,"w")
     turtle.onkey(shoot2,"s")
 
+def borders_of_jet():
+    jx = jet.xcor()
+    jy = jet.ycor()
+    
+    if (jx>RIGHT_EDGE):
+        jet.setx(-1*jx)
+        
+    if (jx<LEFT_EDGE):
+        jet.setx(-1*jx)
+        
+    if (jy>TOP_EDGE):
+        jet.sety(-1*jx)
+        
+    if (jy<BOTTOM_EDGE):
+        jet.sety(-1*jx)
+
+def borders_of_fighter():
+    fx = fighter.xcor()
+    fy = fighter.ycor()
+    
+    if (fx>RIGHT_EDGE):
+        fighter.setx(-1*fx)
+        
+    if (fx<LEFT_EDGE):
+        fighter.setx(-1*fx)
+        
+    if (fy>TOP_EDGE):
+        fighter.sety(-1*fy)
+        
+    if (fy<BOTTOM_EDGE):
+        fighter.sety(-1*fy)
+         
 def turn_left1():
     global jetturningangle, ltd
     ltd = ltd+1
