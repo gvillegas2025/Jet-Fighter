@@ -16,38 +16,57 @@ def movement():
     turtle.onkey(turn_right2,"d")
     turtle.onkey(forward2,"w")
     turtle.onkey(shoot2,"s")
+    
+    borders_of_jet()
+    #borders_of_fighter()
 
 def borders_of_jet():
     jx = jet.xcor()
     jy = jet.ycor()
     
     if (jx>RIGHT_EDGE):
+        jet.pu()
         jet.setx(-1*jx)
+        jet.pd()
         
     if (jx<LEFT_EDGE):
+        jet.pu()
         jet.setx(-1*jx)
+        jet.pd()
         
     if (jy>TOP_EDGE):
-        jet.sety(-1*jx)
+        jet.pu()
+        jet.sety(-1*jy)
+        jet.pd()
         
     if (jy<BOTTOM_EDGE):
-        jet.sety(-1*jx)
+        jet.pu()
+        jet.sety(-1*jy)
+        jet.pd()
 
 def borders_of_fighter():
     fx = fighter.xcor()
     fy = fighter.ycor()
     
     if (fx>RIGHT_EDGE):
+        jet.pu()
         fighter.setx(-1*fx)
+        jet.pd()
         
     if (fx<LEFT_EDGE):
+        jet.pu()
         fighter.setx(-1*fx)
+        jet.pd()
         
     if (fy>TOP_EDGE):
+        jet.pu()
         fighter.sety(-1*fy)
+        jet.pd()
         
     if (fy<BOTTOM_EDGE):
+        jet.pu()
         fighter.sety(-1*fy)
+        jet.pd()
          
 def turn_left1():
     global jetturningangle, ltd
@@ -115,6 +134,7 @@ jet1turn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "
 
 # Screen
 screen = Screen()
+screen.setup(800,800)
 screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
 turtle.bgpic(picname="Sky.gif")
