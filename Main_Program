@@ -25,7 +25,7 @@ def movement():
 #it takes no parameters but uses two global variables, jet turning
 #angle and ltd. It subtracts frum the jet turning angle
 def jet_left():
-    global jetturningangle, jltd
+    global jetturningangle, jltd, jrtd
     jltd = jltd+1
     if jltd == 1 and jetturningangle == 0:
         jetturningangle = 11
@@ -37,20 +37,25 @@ def jet_left():
     jet.left(HEADING_STEP)
     turtle.addshape(name=jetturn[jetturningangle], shape=None) 
     jet.shape(jetturn[jetturningangle])
+    jrtd = jrtd+1
 
 
 #This functions occurs when the right arrow key is pressed. It has
 #no parameters but uses the global variable jet turning angle
 #It adds to jet turning angle and turns the plane right 30 degrees
 def jet_right():
-    global jetturningangle
-    if jetturningangle <= 11:
+    global jetturningangle, jrtd, jltd
+    jrtd = jrtd+1
+    if jetturningangle == 0 and jrtd == 1:
+        jetturningangle = 0
+    if jetturningangle <= 11 and jrtd !=1:
         jetturningangle = jetturningangle+1
     if jetturningangle == 12:
         jetturningangle = 0
     jet.right(HEADING_STEP)
     turtle.addshape(name=jetturn[jetturningangle], shape=None) 
-    jet.shape(jetturn[jetturningangle])    
+    jet.shape(jetturn[jetturningangle])
+    jltd = jltd +1
 
 #this function serves as a kind of boost when the up arrow key is pressed.
 #it moves the jet forward 1.5 times the forward speed
@@ -78,7 +83,7 @@ def fighter_right():
     fltd = fltd+1
 
 def fighter_left():
-    global fighterturningangle, fltd
+    global fighterturningangle, fltd, frtd
     fltd = fltd+1
     if fighterturningangle == 0 and fltd == 1:
         fighterturningangle = 0
@@ -89,6 +94,7 @@ def fighter_left():
     fighter.left(HEADING_STEP)
     turtle.addshape(name=fighterturn[fighterturningangle], shape=None) 
     fighter.shape(fighterturn[fighterturningangle])
+    frtd = frtd+1
     
 def fighter_forward():
     fighter.forward(1.5*FORWARD_SPEED)
@@ -130,6 +136,7 @@ FORWARD_SPEED = 6
 # Global Variables
 jetturningangle = 0
 jltd = 0
+jrtd = 0
 
 fighterturningangle = 0
 fltd = 0
