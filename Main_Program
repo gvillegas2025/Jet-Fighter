@@ -5,10 +5,10 @@ from turtle import *
 # Functions
 
 #this function uses the turtle.listen() function and tells the
-#game what to do when abuttonn is pressed. It also moves the plane forward
+#game what to do when a buttonn is pressed. It also moves the planes forward
 def movement():
     jet.forward(FORWARD_SPEED)
-    #fighter.forward(FORWARD_SPEED)
+    fighter.forward(FORWARD_SPEED)
     turtle.onkey(turn_left1,"Left")
     turtle.onkey(turn_right1,"Right")
     turtle.onkey(forward1,"Up")
@@ -19,6 +19,8 @@ def movement():
     turtle.onkey(forward2,"w")
     turtle.onkey(shoot2,"s")
 
+    turtle.onkey(pause, "space")
+    turtle.onkey(Quit, "q")
 #this function occurs when the left arrow key is pressed.
 #it takes no parameters but uses two global variables, jet turning
 #angle and ltd. It subtracts frum the jet turning angle
@@ -39,7 +41,7 @@ def turn_left1():
 
 #This functions occurs when the right arrow key is pressed. It has
 #no parameters but uses the global variable jet turning angle
-#It adds to jet turning angle and turns the plan right 30 degrees
+#It adds to jet turning angle and turns the plane right 30 degrees
 def turn_right1():
     global jetturningangle
     if jetturningangle <= 11:
@@ -64,7 +66,7 @@ def turn_right2():
     global fighterturningangle, frtd, fltd
     frtd = frtd+1
     if frtd == 1 and fighterturningangle == 0:
-        fighterturningangle = 12
+        fighterturningangle = 11
     if fighterturningangle == 0:
         fighterturningangle = 11
     else:
@@ -89,7 +91,7 @@ def turn_left2():
     fighter.shape(fighterturn[fighterturningangle])
     
 def forward2():
-    fighter.forward(FORWARD_SPEED)
+    fighter.forward(1.5*FORWARD_SPEED)
 
 def shoot2():
     return
@@ -108,6 +110,13 @@ def pause():
       paused = False
    elif (paused == False):
       paused = True
+def Quit():
+    paused = True
+    q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
+    if q == "yes":
+        quit()
+    else:
+        paused = False
       
 # Constants
 RIGHT_EDGE= 400
@@ -122,6 +131,9 @@ FORWARD_SPEED = 6
 jetturningangle = 0
 jltd = 0
 
+fighterturningangle = 0
+fltd = 0
+frtd = 0
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
@@ -129,9 +141,7 @@ score.penup()
 score.hideturtle()
 score.goto (0,260)
 
-fighterturningangle = 0
-fltd = 0
-frtd = 0
+
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
 fighterturn = ["Fighter330.gif", "Fighter300.gif", "Fighter270.gif", "Fighter240.gif", "Fighter210.gif","Fighter180.gif","Fighter150.gif", "Fighter120.gif", "Fighter90.gif", "Fighter60.gif", "Fighter30.gif","Fighter0.gif"]
@@ -146,14 +156,13 @@ screen.tracer(0)
 jet = Turtle()
 turtle.addshape(name="Jet0.gif", shape=None) 
 jet.shape("Jet0.gif") 
-jet.color("black")
 jet.penup()
 jet.setx(100)
 
 fighter = Turtle()
 turtle.addshape(name="Fighter0.gif", shape=None)
 fighter.shape("Fighter0.gif")
-fighter.color("green")
+fighter.penup()
 fighter.setx(-100)
 fighter.left(180)
 
