@@ -13,6 +13,8 @@ def movement():
     fighter.forward(FORWARD_SPEED)
     ata_jet_follow()
     ata_jet_seek()
+    ata_fighter_follow()
+    ata_fighter_seek()
     turtle.onkey(jet_left,"Left")
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
@@ -23,6 +25,7 @@ def movement():
     turtle.onkey(fighter_right,"d")
     turtle.onkey(fighter_forward,"w")
     turtle.onkey(fighter_shoot,"s")
+    turtle.onkey(ataf_activator,"e")
     
     turtle.onkey(pause, "space")
     turtle.onkey(Quit, "q")
@@ -193,6 +196,34 @@ def ata_jet_seek():
         if abs(ata_jet.xcor() - fighter.xcor())<10 and abs(ata_jet.ycor() - fighter.ycor()) <10:
              ataj_active = False   
              ata_jet.clear()
+ 
+def ataf_activator():
+    global ataf_active
+    ataf_active = True
+
+def ata_fighter_follow():
+    global ataf_active
+    if (ataf_active==False):
+        ata_fighter.pu()
+        ata_fighter.goto(fighter.xcor(),fighter.ycor())
+        ata_fighter.setheading(fighter.heading())
+        
+def ata_fighter_seek():
+    global ataf_active
+    if ataf_active:
+        ata_fighter.pd()
+        ataf_xdist = ata_fighter.xcor()-jet.xcor()+.0000000000000000001
+        ataf_ydist = ata_fighter.ycor()-jet.ycor()+.0000000000000000001
+        ataf_rel_ang = math.degrees(tan(ataf_ydist/ataf_xdist))
+        if (ata_fighter.xcor()>jet.xcor() and ata_fighter.ycor()>jet.ycor()):
+            ataf_rel_ang-=180
+        if (ata_fighter.xcor()>jet.xcor() and ata_fighter.ycor()<jet.ycor()):
+            ataf_rel_ang-=90
+        ata_fighter.setheading(ataf_rel_ang)
+        ata_fighter.forward(FORWARD_SPEED*1.7)
+        if abs(ata_fighter.xcor() - jet.xcor())<10 and abs(ata_fighter.ycor() - jet.ycor()) <10:
+             ataf_active = False   
+             ata_fighter.clear()
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -209,6 +240,7 @@ jrtd = 0
 p1 = 0
 p2 = 0
 ataj_active = False
+ataf_active = False
 
 fighterturningangle = 0
 fltd = 0
@@ -253,6 +285,10 @@ ata_jet.color('red')
 ata_jet.pu()
 ata_jet.goto(jet.xcor(),jet.ycor())
 
+ata_fighter = Turtle()
+ata_fighter.color('black')
+ata_fighter.pu()
+ata_fighter.goto(fighter.xcor(),fighter.ycor())
 
 paused = False
 # Game Loop
@@ -261,5 +297,6 @@ while(True):
     turtle.listen()
     if not (paused):
         movement()
+      #  score_board()
 
 # Make sure yall have all the rotations of the plane downloaded on your computer 
