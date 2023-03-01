@@ -1,6 +1,8 @@
 #Jet Fighter
 import turtle
 from turtle import *
+import math
+from math import tan
 
 # Functions
 
@@ -9,10 +11,13 @@ from turtle import *
 def movement():
     jet.forward(FORWARD_SPEED)
     fighter.forward(FORWARD_SPEED)
+    ata_jet_follow()
+    ata_jet_seek()
     turtle.onkey(jet_left,"Left")
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
     turtle.onkey(jet_shoot,"Down")
+    turtle.onkey(ataj_activator,"k")
     
     turtle.onkey(fighter_left,"a")
     turtle.onkey(fighter_right,"d")
@@ -160,7 +165,34 @@ def Quit():
         quit()
     else:
         paused = False
-      
+
+def ataj_activator():
+    global ataj_active
+    ataj_active = True
+
+def ata_jet_follow():
+    global ataj_active
+    if (ataj_active==False):
+        ata_jet.pu()
+        ata_jet.goto(jet.xcor(),jet.ycor())
+        ata_jet.setheading(jet.heading())
+
+def ata_jet_seek():
+    global ataj_active
+    if ataj_active:
+        ata_jet.pd()
+        ataj_xdist = ata_jet.xcor()-fighter.xcor()+.0000000000000000001
+        ataj_ydist = ata_jet.ycor()-fighter.ycor()+.0000000000000000001
+        ataj_rel_ang = math.degrees(tan(ataj_ydist/ataj_xdist))
+        if (ata_jet.xcor()>fighter.xcor() and ata_jet.ycor()>fighter.ycor()):
+            ataj_rel_ang-=180
+        if (ata_jet.xcor()>fighter.xcor() and ata_jet.ycor()<fighter.ycor()):
+            ataj_rel_ang-=90
+        ata_jet.setheading(ataj_rel_ang)
+        ata_jet.forward(FORWARD_SPEED*1.7)
+        if abs(ata_jet.xcor() - fighter.xcor())<10 and abs(ata_jet.ycor() - fighter.ycor()) <10:
+             ataj_active = False   
+             ata_jet.clear()
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -174,6 +206,9 @@ FORWARD_SPEED = 6
 jetturningangle = 0
 jltd = 0
 jrtd = 0
+p1 = 0
+p2 = 0
+ataj_active = False
 
 fighterturningangle = 0
 fltd = 0
@@ -212,6 +247,11 @@ fighter.color('red')
 fighter.penup()
 fighter.setx(-100)
 fighter.left(180)
+
+ata_jet = Turtle()
+ata_jet.color('red')
+ata_jet.pu()
+ata_jet.goto(jet.xcor(),jet.ycor())
 
 
 paused = False
