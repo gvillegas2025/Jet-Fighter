@@ -157,7 +157,7 @@ def Quit():
     paused = True
     q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
     if q == "yes":
-        quit()
+        turtle.bye()
     else:
         paused = False
       
