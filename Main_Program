@@ -17,7 +17,7 @@ def movement():
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
     turtle.onkey(jet_shoot,"Down")
-    turtle.onkey(ataj_activator,"k")
+    turtle.onkey(ataj_activator,"/")
     
     turtle.onkey(fighter_left,"a")
     turtle.onkey(fighter_right,"d")
