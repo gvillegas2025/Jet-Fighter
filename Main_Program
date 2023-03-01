@@ -18,9 +18,13 @@ def movement():
     turtle.onkey(fighter_right,"d")
     turtle.onkey(fighter_forward,"w")
     turtle.onkey(fighter_shoot,"s")
-
+    
     turtle.onkey(pause, "space")
     turtle.onkey(Quit, "q")
+    
+    borders_of_jet()
+    borders_of_fighter()
+
 #this function occurs when the left arrow key is pressed.
 #it takes no parameters but uses two global variables, jet turning
 #angle and ltd. It subtracts frum the jet turning angle
@@ -28,6 +32,7 @@ def jet_left():
     global jetturningangle, jltd, jrtd
     jltd = jltd+1
     if jltd == 1 and jetturningangle == 0:
+
         jetturningangle = 11
     if jetturningangle == 0:
         jetturningangle = 11
@@ -102,6 +107,38 @@ def fighter_forward():
 def fighter_shoot():
     return
 
+def borders_of_jet():
+    jx = jet.xcor()
+    jy = jet.ycor()
+    
+    if (jx>RIGHT_EDGE):
+        jet.setx(-1*jx)
+        
+    if (jx<LEFT_EDGE):
+        jet.setx(-1*jx)
+        
+    if (jy>TOP_EDGE):
+        jet.sety(-1*jy)
+        
+    if (jy<BOTTOM_EDGE):
+        jet.sety(-1*jy)
+
+def borders_of_fighter():
+    fx = fighter.xcor()
+    fy = fighter.ycor()
+    
+    if (fx>RIGHT_EDGE):
+        fighter.setx(-1*fx)
+        
+    if (fx<LEFT_EDGE):
+        fighter.setx(-1*fx)
+        
+    if (fy>TOP_EDGE):
+        fighter.sety(-1*fy)
+        
+    if (fy<BOTTOM_EDGE):
+        fighter.sety(-1*fy)
+
 def score_board():
     global p1,p2
     jet_prompt = "jet: " + str(p1)
@@ -152,8 +189,10 @@ score.goto (0,260)
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
 fighterturn = ["Fighter330.gif", "Fighter300.gif", "Fighter270.gif", "Fighter240.gif", "Fighter210.gif","Fighter180.gif","Fighter150.gif", "Fighter120.gif", "Fighter90.gif", "Fighter60.gif", "Fighter30.gif","Fighter0.gif"]
+
 # Screen
 screen = Screen()
+screen.setup(800,800)
 screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
 turtle.bgpic(picname="Sky.gif")
@@ -169,6 +208,7 @@ jet.setx(100)
 fighter = Turtle()
 turtle.addshape(name="Fighter0.gif", shape=None)
 fighter.shape("Fighter0.gif")
+fighter.color('red')
 fighter.penup()
 fighter.setx(-100)
 fighter.left(180)
