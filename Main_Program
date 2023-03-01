@@ -120,38 +120,38 @@ def borders_of_jet():
     jy = jet.ycor()
     
     if (jx>RIGHT_EDGE):
-        jet.setx(-1*jx)
+        jet.setx(-1*jx+5)
         
     if (jx<LEFT_EDGE):
-        jet.setx(-1*jx)
+        jet.setx(-1*jx-5)
         
     if (jy>TOP_EDGE):
-        jet.sety(-1*jy)
+        jet.sety(-1*jy+5)
         
     if (jy<BOTTOM_EDGE):
-        jet.sety(-1*jy)
+        jet.sety(-1*jy-5)
 
 def borders_of_fighter():
     fx = fighter.xcor()
     fy = fighter.ycor()
     
     if (fx>RIGHT_EDGE):
-        fighter.setx(-1*fx)
+        fighter.setx(-1*fx+5)
         
     if (fx<LEFT_EDGE):
-        fighter.setx(-1*fx)
+        fighter.setx(-1*fx-5)
         
     if (fy>TOP_EDGE):
-        fighter.sety(-1*fy)
+        fighter.sety(-1*fy+5)
         
     if (fy<BOTTOM_EDGE):
-        fighter.sety(-1*fy)
+        fighter.sety(-1*fy-5)
 
 def score_board():
     global p1,p2
     jet_prompt = "jet: " + str(p1)
     fighter_prompt = "fighter: " + str(p2)
-    score_prompt = jet_prompt + fighter_prompt
+    score_prompt = jet_prompt + " " + fighter_prompt
     
     score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
 
