@@ -20,7 +20,7 @@ def movement():
     turtle.onkey(fighter_shoot,"s")
     
     turtle.onkey(pause, "space")
-    turtle.onkey(Quit, "q")
+    turtle.onkey(Quit, "Q")
     
     borders_of_jet()
     borders_of_fighter()
