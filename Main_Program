@@ -109,7 +109,7 @@ def score_board():
     score_prompt = jet_prompt + fighter_prompt
     
     score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
-    
+
 def pause():
    global paused
    if (paused == True):
@@ -141,13 +141,13 @@ jrtd = 0
 fighterturningangle = 0
 fltd = 0
 frtd = 0
+
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
 score.penup()
 score.hideturtle()
 score.goto (0,260)
-
 
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
