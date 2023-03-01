@@ -28,7 +28,7 @@ def movement():
     turtle.onkey(ataf_activator,"e")
     
     turtle.onkey(pause, "space")
-    turtle.onkey(Quit, "q")
+    turtle.onkey(Quit, "Q")
     
     borders_of_jet()
     borders_of_fighter()
@@ -165,7 +165,7 @@ def Quit():
     paused = True
     q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
     if q == "yes":
-        quit()
+        turtle.bye()
     else:
         paused = False
 
