@@ -112,48 +112,32 @@ def borders_of_jet():
     jy = jet.ycor()
     
     if (jx>RIGHT_EDGE):
-        jet.pu()
         jet.setx(-1*jx)
-        jet.pd()
         
     if (jx<LEFT_EDGE):
-        jet.pu()
         jet.setx(-1*jx)
-        jet.pd()
         
     if (jy>TOP_EDGE):
-        jet.pu()
         jet.sety(-1*jy)
-        jet.pd()
         
     if (jy<BOTTOM_EDGE):
-        jet.pu()
         jet.sety(-1*jy)
-        jet.pd()
 
 def borders_of_fighter():
     fx = fighter.xcor()
     fy = fighter.ycor()
     
     if (fx>RIGHT_EDGE):
-        fighter.pu()
         fighter.setx(-1*fx)
-        fighter.pd()
         
     if (fx<LEFT_EDGE):
-        fighter.pu()
         fighter.setx(-1*fx)
-        fighter.pd()
         
     if (fy>TOP_EDGE):
-        fighter.pu()
         fighter.sety(-1*fy)
-        fighter.pd()
         
     if (fy<BOTTOM_EDGE):
-        fighter.pu()
         fighter.sety(-1*fy)
-        fighter.pd()
 
 def score_board():
     global p1,p2
@@ -205,6 +189,7 @@ score.goto (0,260)
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
 fighterturn = ["Fighter330.gif", "Fighter300.gif", "Fighter270.gif", "Fighter240.gif", "Fighter210.gif","Fighter180.gif","Fighter150.gif", "Fighter120.gif", "Fighter90.gif", "Fighter60.gif", "Fighter30.gif","Fighter0.gif"]
+
 # Screen
 screen = Screen()
 screen.setup(800,800)
