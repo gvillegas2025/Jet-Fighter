@@ -12,10 +12,11 @@ def movement():
     jet.forward(FORWARD_SPEED)
     fighter.forward(FORWARD_SPEED)
     ata_jet_follow()
-    a = ata_jet_seek()
-    ata_jet_borders(a)
+    aj = ata_jet_seek()
+    ata_jet_borders(aj)
     ata_fighter_follow()
-    ata_fighter_seek()
+    af = ata_fighter_seek()
+    ata_fighter_borders(af)
     turtle.onkey(jet_left,"Left")
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
@@ -199,12 +200,12 @@ def ata_jet_seek():
              ata_jet.clear()
         return (ataj_rel_ang)
 
-def ata_jet_borders(a):
+def ata_jet_borders(aj):
     global ataj_active
     ax = ata_jet.xcor()
     ay = ata_jet.ycor()
     if ataj_active:
-        ataj_rel_angle = int(a)
+        ataj_rel_angle = int(aj)
         turn_angle = ataj_rel_angle + 180
         if (ax>RIGHT_EDGE): 
             ata_jet.setheading(turn_angle)
@@ -249,6 +250,30 @@ def ata_fighter_seek():
         if abs(ata_fighter.xcor() - jet.xcor())<10 and abs(ata_fighter.ycor() - jet.ycor()) <10:
              ataf_active = False   
              ata_fighter.clear()
+        return (ataf_rel_ang)
+    
+def ata_fighter_borders(af):
+    global ataf_active
+    ax = ata_fighter.xcor()
+    ay = ata_fighter.ycor()
+    if ataf_active:
+        ataf_rel_angle = int(af)
+        turn_angle = ataf_rel_angle + 180
+        if (ax>RIGHT_EDGE): 
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(10)
+            
+        if (ax<LEFT_EDGE):    
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(10)
+            
+        if (ay>TOP_EDGE): 
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(10)
+          
+        if (ay<BOTTOM_EDGE): 
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(10)
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
