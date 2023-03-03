@@ -150,12 +150,22 @@ def borders_of_fighter():
         fighter.sety(-1*fy-5)
 
 def score_board():
-    global p1, p2
+    global p1, p2, paused
     score.clear()
     jet_prompt = "Jet: "
     fighter_prompt = "Fighter: "
-    score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
-    score.write (score_prompt, align="center", font=("Roboto", 40, "bold"))
+    score_prompt = jeta_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+    score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
+    if p1 == 20:
+        paused = True
+        score.clear()
+        score.goto(0,-50)
+        score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+    if p2 == 20:
+        paused = True
+        score.clear()
+        score.goto(0,-50)
+        score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
         
 def pause():
    global paused
