@@ -274,6 +274,7 @@ def ata_fighter_borders(af):
         if (ay<BOTTOM_EDGE): 
             ata_fighter.setheading(turn_angle)
             ata_fighter.forward(10)
+            
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
