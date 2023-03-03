@@ -288,14 +288,15 @@ FORWARD_SPEED = 6
 jetturningangle = 0
 jltd = 0
 jrtd = 0
+ataj_active = False
+
 p1 = 0
 p2 = 0
-ataj_active = False
-ataf_active = False
 
 fighterturningangle = 0
 fltd = 0
 frtd = 0
+ataf_active = False
 
 #scoreboard
 score=turtle.Turtle()
