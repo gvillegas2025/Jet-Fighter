@@ -12,7 +12,8 @@ def movement():
     jet.forward(FORWARD_SPEED)
     fighter.forward(FORWARD_SPEED)
     ata_jet_follow()
-    ata_jet_seek()
+    a = ata_jet_seek()
+    ata_jet_borders(a)
     ata_fighter_follow()
     ata_fighter_seek()
     turtle.onkey(jet_left,"Left")
@@ -196,7 +197,31 @@ def ata_jet_seek():
         if abs(ata_jet.xcor() - fighter.xcor())<10 and abs(ata_jet.ycor() - fighter.ycor()) <10:
              ataj_active = False   
              ata_jet.clear()
- 
+        return (ataj_rel_ang)
+
+def ata_jet_borders(a):
+    global ataj_active
+    ax = ata_jet.xcor()
+    ay = ata_jet.ycor()
+    if ataj_active:
+        ataj_rel_angle = int(a)
+        turn_angle = ataj_rel_angle + 180
+        if (ax>RIGHT_EDGE): 
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(10)
+            
+        if (ax<LEFT_EDGE):    
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(10)
+            
+        if (ay>TOP_EDGE): 
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(10)
+          
+        if (ay<BOTTOM_EDGE): 
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(10)
+
 def ataf_activator():
     global ataf_active
     ataf_active = True
@@ -299,4 +324,4 @@ while(True):
         movement()
       #  score_board()
 
-# Make sure yall have all the rotations of the plane downloaded on your computer 
+# Make sure yall have all the rotations of the plane downloaded on your computer
