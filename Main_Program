@@ -3,6 +3,7 @@ import turtle
 from turtle import *
 import math
 from math import tan
+import re
 
 # Functions
 
@@ -166,7 +167,7 @@ def pause():
 def Quit():
     paused = True
     q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
-    if q == "yes":
+    if re.match("^[y, Y]", q):
         turtle.bye()
     else:
         paused = False
