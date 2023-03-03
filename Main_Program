@@ -229,19 +229,19 @@ def ata_jet_borders(aj):
         turn_angle = ataj_rel_angle + 180
         if (ax>RIGHT_EDGE): 
             ata_jet.setheading(turn_angle)
-            ata_jet.forward(10)
+            ata_jet.forward(30)
             
         if (ax<LEFT_EDGE):    
             ata_jet.setheading(turn_angle)
-            ata_jet.forward(10)
+            ata_jet.forward(30)
             
         if (ay>TOP_EDGE): 
             ata_jet.setheading(turn_angle)
-            ata_jet.forward(10)
+            ata_jet.forward(30)
           
         if (ay<BOTTOM_EDGE): 
             ata_jet.setheading(turn_angle)
-            ata_jet.forward(10)
+            ata_jet.forward(30)
 
 def ataf_activator():
     global ataf_active
@@ -282,19 +282,19 @@ def ata_fighter_borders(af):
         turn_angle = ataf_rel_angle + 180
         if (ax>RIGHT_EDGE): 
             ata_fighter.setheading(turn_angle)
-            ata_fighter.forward(10)
+            ata_fighter.forward(30)
             
         if (ax<LEFT_EDGE):    
             ata_fighter.setheading(turn_angle)
-            ata_fighter.forward(10)
+            ata_fighter.forward(30)
             
         if (ay>TOP_EDGE): 
             ata_fighter.setheading(turn_angle)
-            ata_fighter.forward(10)
+            ata_fighter.forward(30)
           
         if (ay<BOTTOM_EDGE): 
             ata_fighter.setheading(turn_angle)
-            ata_fighter.forward(10)
+            ata_fighter.forward(30)
             
 # Constants
 RIGHT_EDGE= 400
