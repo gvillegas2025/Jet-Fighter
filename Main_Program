@@ -22,8 +22,7 @@ def movement():
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
     turtle.onkey(jet_shoot,"Down")
-    turtle.onkey(ataj_activator,"/")
-    
+    turtle.onkey(ataj_activator,"/")    
     turtle.onkey(fighter_left,"a")
     turtle.onkey(fighter_right,"d")
     turtle.onkey(fighter_forward,"w")
@@ -35,6 +34,8 @@ def movement():
     
     borders_of_jet()
     borders_of_fighter()
+
+    
 
 #this function occurs when the left arrow key is pressed.
 #it takes no parameters but uses two global variables, jet turning
@@ -80,8 +81,6 @@ def jet_forward():
 
 def jet_shoot():
     return
-
-
 
 def fighter_right():
     global fighterturningangle, frtd, fltd
@@ -151,31 +150,13 @@ def borders_of_fighter():
         fighter.sety(-1*fy-5)
 
 def score_board():
-    global p1, prev_p1, p2, prev_p2, scoreboard_appear
-    if scoreboard_appear == 0:
-        score.clear()
-        jet_prompt = "Jet: "
-        fighter_prompt = "Fighter: "
-        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
-        score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
-        scoreboard_appear = scoreboard_appear + 1
+    global p1, p2
+    score.clear()
+    jet_prompt = "Jet: "
+    fighter_prompt = "Fighter: "
+    score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+    score.write (score_prompt, align="center", font=("Roboto", 40, "bold"))
         
-    if p1 > prev_p1:
-        score.clear()
-        jet_prompt = "Jet: "
-        fighter_prompt = "Fighter: "
-        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
-        score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
-        prev_p1 = p1
-        
-    if p2 > prev_p2:
-        score.clear()
-        jet_prompt = "Jet: "
-        fighter_prompt = "Fighter: "
-        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
-        score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
-        prev_p2 = p2
-
 def pause():
    global paused
    if (paused == True):
@@ -218,6 +199,7 @@ def ata_jet_seek():
              ataj_active = False   
              ata_jet.clear()
              p1 = p1 + 1
+             score_board()
         return (ataj_rel_ang)
 
 def ata_jet_borders(aj):
@@ -271,6 +253,7 @@ def ata_fighter_seek():
              ataf_active = False   
              ata_fighter.clear()
              p2 = p2 +1
+             score_board()
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
@@ -312,12 +295,7 @@ jrtd = 0
 ataj_active = False
 
 p1 = 0
-prev_p1 = 0
-
 p2 = 0
-prev_p2 = 0
-
-scoreboard_appear = 0
 
 fighterturningangle = 0
 fltd = 0
@@ -329,7 +307,7 @@ score=turtle.Turtle()
 score.speed(0)
 score.penup()
 score.hideturtle()
-score.goto (0,260)
+score.goto (0,300)
 
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
@@ -370,11 +348,11 @@ ata_fighter.goto(fighter.xcor(),fighter.ycor())
 
 paused = False
 # Game Loop
+score_board()
 while(True):
     screen.update()
     turtle.listen()
     if not (paused):
         movement()
-        score_board()
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
