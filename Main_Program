@@ -151,12 +151,30 @@ def borders_of_fighter():
         fighter.sety(-1*fy-5)
 
 def score_board():
-    global p1,p2
-    jet_prompt = "jet: " + str(p1)
-    fighter_prompt = "fighter: " + str(p2)
-    score_prompt = jet_prompt + " " + fighter_prompt
-    
-    score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
+    global p1, prev_p1, p2, prev_p2, scoreboard_appear
+    if scoreboard_appear == 0:
+        score.clear()
+        jet_prompt = "Jet: "
+        fighter_prompt = "Fighter: "
+        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+        score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
+        scoreboard_appear = scoreboard_appear + 1
+        
+    if p1 > prev_p1:
+        score.clear()
+        jet_prompt = "Jet: "
+        fighter_prompt = "Fighter: "
+        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+        score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
+        prev_p1 = p1
+        
+    if p2 > prev_p2:
+        score.clear()
+        jet_prompt = "Jet: "
+        fighter_prompt = "Fighter: "
+        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+        score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
+        prev_p2 = p2
 
 def pause():
    global paused
@@ -184,7 +202,7 @@ def ata_jet_follow():
         ata_jet.setheading(jet.heading())
 
 def ata_jet_seek():
-    global ataj_active
+    global ataj_active, p1
     if ataj_active:
         ata_jet.pd()
         ataj_xdist = ata_jet.xcor()-fighter.xcor()+.0000000000000000001
@@ -199,6 +217,7 @@ def ata_jet_seek():
         if abs(ata_jet.xcor() - fighter.xcor())<10 and abs(ata_jet.ycor() - fighter.ycor()) <10:
              ataj_active = False   
              ata_jet.clear()
+             p1 = p1 + 1
         return (ataj_rel_ang)
 
 def ata_jet_borders(aj):
@@ -236,7 +255,7 @@ def ata_fighter_follow():
         ata_fighter.setheading(fighter.heading())
         
 def ata_fighter_seek():
-    global ataf_active
+    global ataf_active, p2
     if ataf_active:
         ata_fighter.pd()
         ataf_xdist = ata_fighter.xcor()-jet.xcor()+.0000000000000000001
@@ -251,6 +270,7 @@ def ata_fighter_seek():
         if abs(ata_fighter.xcor() - jet.xcor())<10 and abs(ata_fighter.ycor() - jet.ycor()) <10:
              ataf_active = False   
              ata_fighter.clear()
+             p2 = p2 +1
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
@@ -292,7 +312,12 @@ jrtd = 0
 ataj_active = False
 
 p1 = 0
+prev_p1 = 0
+
 p2 = 0
+prev_p2 = 0
+
+scoreboard_appear = 0
 
 fighterturningangle = 0
 fltd = 0
@@ -350,6 +375,6 @@ while(True):
     turtle.listen()
     if not (paused):
         movement()
-      #  score_board()
+        score_board()
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
