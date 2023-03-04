@@ -186,6 +186,7 @@ def winning():
         ata_jet.goto(jx,jy)
         ata_jet.setheading(jet.heading())
         ata_fighter.hideturtle()
+        ata_fighter.clear()
         turtle.addshape(name="explosion.gif", shape=None)
         fighter.shape("explosion.gif")
         
@@ -207,6 +208,7 @@ def winning():
         ata_fighter.goto(fx,fy)
         ata_fighter.setheading(fighter.heading())
         ata_jet.hideturtle()
+        ata_jet.clear()
         turtle.addshape(name="explosion.gif", shape=None)
         jet.shape("explosion.gif")
         
