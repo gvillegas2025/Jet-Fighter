@@ -154,7 +154,7 @@ def score_board():
     score.clear()
     jet_prompt = "Jet: "
     fighter_prompt = "Fighter: "
-    score_prompt = jeta_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+    score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
     if p1 == 20:
         paused = True
