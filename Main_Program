@@ -150,7 +150,7 @@ def borders_of_fighter():
         fighter.sety(-1*fy-5)
 
 def score_board():
-    global p1, p2
+    global p1, p2, win
     
     score.clear()
     jet_prompt = "Jet: "
@@ -168,7 +168,7 @@ def winning():
     jx = jet.xcor()
     jy = jet.ycor()
     
-    if p1 == 1:
+    if p1 == 20:
         paused = True
         score.clear()
         if fy > 0:
@@ -189,8 +189,9 @@ def winning():
         ata_fighter.clear()
         turtle.addshape(name="explosion.gif", shape=None)
         fighter.shape("explosion.gif")
+        win = True
         
-    if p2 == 1:
+    if p2 == 20:
         paused = True
         score.clear()
         if jy > 0:
@@ -211,6 +212,7 @@ def winning():
         ata_jet.clear()
         turtle.addshape(name="explosion.gif", shape=None)
         jet.shape("explosion.gif")
+        win = True
         
 def pause():
    global paused
@@ -357,6 +359,7 @@ fltd = 0
 frtd = 0
 ataf_active = False
 
+win = False
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
@@ -409,5 +412,7 @@ while(True):
     turtle.listen()
     if not (paused):
         movement()
+    if win == True:
+        break
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
