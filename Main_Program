@@ -150,22 +150,65 @@ def borders_of_fighter():
         fighter.sety(-1*fy-5)
 
 def score_board():
-    global p1, p2, paused
+    global p1, p2
+    
     score.clear()
     jet_prompt = "Jet: "
     fighter_prompt = "Fighter: "
     score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
-    if p1 == 20:
+    winning()
+
+
+def winning():
+    global p1, p2, paused
+
+    fx = fighter.xcor()
+    fy = fighter.ycor()
+    jx = jet.xcor()
+    jy = jet.ycor()
+    
+    if p1 == 1:
         paused = True
         score.clear()
-        score.goto(0,-50)
-        score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
-    if p2 == 20:
+        if fy > 0:
+            score.goto(0,-250)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+        if fy < 0:
+            score.goto(0,200)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+        if fy == 0:
+            score.goto(0,200)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+
+        ata_jet.pu()
+        ata_fighter.pu()
+        ata_jet.goto(jx,jy)
+        ata_jet.setheading(jet.heading())
+        ata_fighter.hideturtle()
+        turtle.addshape(name="explosion.gif", shape=None)
+        fighter.shape("explosion.gif")
+        
+    if p2 == 1:
         paused = True
         score.clear()
-        score.goto(0,-50)
-        score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        if jy > 0:
+            score.goto(0,-250)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        if jy < 0:
+            score.goto(0,200)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        if jy == 0:
+            score.goto(0,200)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+
+        ata_jet.pu()
+        ata_fighter.pu()
+        ata_fighter.goto(fx,fy)
+        ata_fighter.setheading(fighter.heading())
+        ata_jet.hideturtle()
+        turtle.addshape(name="explosion.gif", shape=None)
+        jet.shape("explosion.gif")
         
 def pause():
    global paused
