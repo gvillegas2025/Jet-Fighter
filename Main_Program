@@ -10,31 +10,47 @@ import re
 #this function uses the turtle.listen() function and tells the
 #game what to do when a button is pressed. It also moves the planes forward
 def movement():
-    jet.forward(FORWARD_SPEED)
-    fighter.forward(FORWARD_SPEED)
-    ata_jet_follow()
-    aj = ata_jet_seek()
-    ata_jet_borders(aj)
-    ata_fighter_follow()
-    af = ata_fighter_seek()
-    ata_fighter_borders(af)
-    turtle.onkey(jet_left,"Left")
-    turtle.onkey(jet_right,"Right")
-    turtle.onkey(jet_forward,"Up")
-    turtle.onkey(jet_shoot,"Down")
-    turtle.onkey(ataj_activator,"/")    
-    turtle.onkey(fighter_left,"a")
-    turtle.onkey(fighter_right,"d")
-    turtle.onkey(fighter_forward,"w")
-    turtle.onkey(fighter_shoot,"s")
-    turtle.onkey(ataf_activator,"e")
-    
-    turtle.onkey(pause, "space")
-    turtle.onkey(Quit, "Q")
-    
-    borders_of_jet()
-    borders_of_fighter()
-
+    global listening
+    if listening == True:
+        jet.forward(FORWARD_SPEED)
+        fighter.forward(FORWARD_SPEED)
+        ata_jet_follow()
+        aj = ata_jet_seek()
+        ata_jet_borders(aj)
+        ata_fighter_follow()
+        af = ata_fighter_seek()
+        ata_fighter_borders(af)
+        turtle.onkey(jet_left,"Left")
+        turtle.onkey(jet_right,"Right")
+        turtle.onkey(jet_forward,"Up")
+        turtle.onkey(jet_shoot,"Down")
+        turtle.onkey(ataj_activator,"/")    
+        turtle.onkey(fighter_left,"a")
+        turtle.onkey(fighter_right,"d")
+        turtle.onkey(fighter_forward,"w")
+        turtle.onkey(fighter_shoot,"s")
+        turtle.onkey(ataf_activator,"e")
+        
+        turtle.onkey(pause, "space")
+        turtle.onkey(Quit, "Q")
+        
+        borders_of_jet()
+        borders_of_fighter()
+    else:
+        turtle.onkey(None,"Left")
+        turtle.onkey(None,"Right")
+        turtle.onkey(None,"Up")
+        turtle.onkey(None,"Down")
+        turtle.onkey(None,"/")    
+        turtle.onkey(None,"a")
+        turtle.onkey(None,"d")
+        turtle.onkey(None,"w")
+        turtle.onkey(None,"s")
+        turtle.onkey(None,"e")
+        
+        turtle.onkey(None, "space")
+        turtle.onkey(None, "Q")
+        return
     
 
 #this function occurs when the left arrow key is pressed.
@@ -161,7 +177,7 @@ def score_board():
 
 
 def winning():
-    global p1, p2, paused
+    global p1, p2, paused, listening
 
     fx = fighter.xcor()
     fy = fighter.ycor()
@@ -189,7 +205,7 @@ def winning():
         ata_fighter.clear()
         turtle.addshape(name="explosion.gif", shape=None)
         fighter.shape("explosion.gif")
-        win = True
+        listening = False
         
     if p2 == 20:
         paused = True
@@ -212,14 +228,17 @@ def winning():
         ata_jet.clear()
         turtle.addshape(name="explosion.gif", shape=None)
         jet.shape("explosion.gif")
-        win = True
+        listening = False
         
 def pause():
-   global paused
+   global paused, listening
    if (paused == True):
       paused = False
+      listening = True
    elif (paused == False):
       paused = True
+      listening = False
+      
 def Quit():
     paused = True
     q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
@@ -359,7 +378,7 @@ fltd = 0
 frtd = 0
 ataf_active = False
 
-win = False
+listening = True
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
@@ -412,7 +431,6 @@ while(True):
     turtle.listen()
     if not (paused):
         movement()
-    if win == True:
-        break
+
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
