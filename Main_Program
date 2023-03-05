@@ -20,13 +20,14 @@ def movement():
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
     turtle.onkey(jet_shoot,"Down")
-    jet_bullet_follow()
+    jet_bullet_moving()
     turtle.onkey(ataj_activator,"/")
     
     turtle.onkey(fighter_left,"a")
     turtle.onkey(fighter_right,"d")
     turtle.onkey(fighter_forward,"w")
     turtle.onkey(fighter_shoot,"s")
+    fighter_bullet_moving()
     turtle.onkey(ataf_activator,"e")
     
     turtle.onkey(pause, "space")
@@ -78,27 +79,47 @@ def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
 
 def jet_shoot():
-    if len(jbullets)<=50:
-        jbullets.append(Turtle())
-        last_bullet = jbullets[len(jbullets)-1]
-        last_bullet.setheading(jet.heading())
-        last_bullet.pu()
-        last_bullet.shape('circle')
-        last_bullet.shapesize(.1,.1,.1)
-        last_bullet.goto(jet.xcor(),jet.ycor())
+    if len(jbullets)<50:
+        jbullets.append([Turtle(),False])
+        last_turtle = jbullets[len(jbullets)-1][0]
+        last_turtle.setheading(jet.heading())
+        last_turtle.pu()
+        last_turtle.shape('circle')
+        last_turtle.color('red')
+        last_turtle.shapesize(.1,.1,.1)
+        last_turtle.goto(jet.xcor(),jet.ycor())
+    elif len(jbullets)>=50:
+        first_elem = jbullets[0]
+        first_turtle = first_elem[0]
+        out_o_b = first_elem[1]
+        if (out_o_b):
+            first_turtle.goto(jet.xcor(),jet.ycor())
+            first_turtle.setheading(jet.heading())
+            jbullets.remove(first_elem)
+            jbullets.append([first_elem[0],False])
 
-def jet_bullet_follow():
+def jet_bullet_moving():
     for turt in jbullets:
-        turt.pu()
-        if turt.xcor()> 600 or turt.xcor()< -600:
-            turt.goto(650,0)
+        turt[0].pu()
+        out_of_bounds_x = False
+        out_of_bounds_y = False
+        if turt[0].xcor()> 600 or turt[0].xcor()< -600:
+            turt[0].goto(650,0)
             mover = 0
-        elif turt.ycor()> 600 or turt.ycor()< -600:
-            turt.goto(650,0)
+            out_of_bounds_x = True
+        elif turt[0].ycor()> 600 or turt[0].ycor()< -600:
+            turt[0].goto(650,0)
             mover = 0
+            out_of_bounds_y = True
         else:
             mover = 2
-        turt.forward(FORWARD_SPEED*mover)
+        if (out_of_bounds_x or out_of_bounds_y) or (turt[1]==True):
+            turt.remove(turt[1])
+            turt.append(True)
+        else:
+            turt.remove(turt[1])
+            turt.append(False)
+        turt[0].forward(FORWARD_SPEED*mover)
         
 def fighter_right():
     global fighterturningangle, frtd, fltd
@@ -133,7 +154,46 @@ def fighter_forward():
     fighter.forward(1.5*FORWARD_SPEED)
 
 def fighter_shoot():
-    return
+    if len(fbullets)<50:
+        fbullets.append([Turtle(),False])
+        last_turtle = fbullets[len(fbullets)-1][0]
+        last_turtle.setheading(fighter.heading())
+        last_turtle.pu()
+        last_turtle.shape('circle')
+        last_turtle.shapesize(.1,.1,.1)
+        last_turtle.goto(fighter.xcor(),fighter.ycor())
+    elif len(fbullets)>=50:
+        first_elem = fbullets[0]
+        first_turtle = first_elem[0]
+        out_o_b = first_elem[1]
+        if (out_o_b):
+            first_turtle.goto(fighter.xcor(),fighter.ycor())
+            first_turtle.setheading(fighter.heading())
+            fbullets.remove(first_elem)
+            fbullets.append([first_elem[0],False])
+
+def fighter_bullet_moving():
+    for turt in fbullets:
+        turt[0].pu()
+        out_of_bounds_x = False
+        out_of_bounds_y = False
+        if turt[0].xcor()> 600 or turt[0].xcor()< -600:
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_x = True
+        elif turt[0].ycor()> 600 or turt[0].ycor()< -600:
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_y = True
+        else:
+            mover = 2
+        if (out_of_bounds_x or out_of_bounds_y) or (turt[1]==True):
+            turt.remove(turt[1])
+            turt.append(True)
+        else:
+            turt.remove(turt[1])
+            turt.append(False)
+        turt[0].forward(FORWARD_SPEED*mover)
 
 def borders_of_jet():
     jx = jet.xcor()
