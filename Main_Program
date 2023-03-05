@@ -78,13 +78,14 @@ def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
 
 def jet_shoot():
-    jbullets.append(Turtle())
-    last_bullet = jbullets[len(jbullets)-1]
-    last_bullet.setheading(jet.heading())
-    last_bullet.pu()
-    last_bullet.shape('circle')
-    last_bullet.shapesize(.1,.1,.1)
-    last_bullet.goto(jet.xcor(),jet.ycor())
+    if len(jbullets)==50:
+        jbullets.append(Turtle())
+        last_bullet = jbullets[len(jbullets)-1]
+        last_bullet.setheading(jet.heading())
+        last_bullet.pu()
+        last_bullet.shape('circle')
+        last_bullet.shapesize(.1,.1,.1)
+        last_bullet.goto(jet.xcor(),jet.ycor())
 
 def jet_bullet_follow():
     for turt in jbullets:
