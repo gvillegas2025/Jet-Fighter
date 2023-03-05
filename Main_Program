@@ -15,10 +15,12 @@ def movement():
     ata_jet_seek()
     ata_fighter_follow()
     ata_fighter_seek()
+    
     turtle.onkey(jet_left,"Left")
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
     turtle.onkey(jet_shoot,"Down")
+    jet_bullet_follow()
     turtle.onkey(ataj_activator,"/")
     
     turtle.onkey(fighter_left,"a")
@@ -76,10 +78,27 @@ def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
 
 def jet_shoot():
-    return
+    jbullets.append(Turtle())
+    last_bullet = jbullets[len(jbullets)-1]
+    last_bullet.setheading(jet.heading())
+    last_bullet.pu()
+    last_bullet.shape('circle')
+    last_bullet.shapesize(.1,.1,.1)
+    last_bullet.goto(jet.xcor(),jet.ycor())
 
-
-
+def jet_bullet_follow():
+    for turt in jbullets:
+        turt.pu()
+        if turt.xcor()> 600 or turt.xcor()< -600:
+            turt.goto(650,0)
+            mover = 0
+        elif turt.ycor()> 600 or turt.ycor()< -600:
+            turt.goto(650,0)
+            mover = 0
+        else:
+            mover = 2
+        turt.forward(FORWARD_SPEED*mover)
+        
 def fighter_right():
     global fighterturningangle, frtd, fltd
     frtd = frtd+1
@@ -152,7 +171,6 @@ def score_board():
     jet_prompt = "jet: " + str(p1)
     fighter_prompt = "fighter: " + str(p2)
     score_prompt = jet_prompt + " " + fighter_prompt
-    
     score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
 
 def pause():
@@ -256,6 +274,8 @@ score.goto (0,260)
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
 fighterturn = ["Fighter330.gif", "Fighter300.gif", "Fighter270.gif", "Fighter240.gif", "Fighter210.gif","Fighter180.gif","Fighter150.gif", "Fighter120.gif", "Fighter90.gif", "Fighter60.gif", "Fighter30.gif","Fighter0.gif"]
+jbullets = []
+fbullets = []
 
 # Screen
 screen = Screen()
