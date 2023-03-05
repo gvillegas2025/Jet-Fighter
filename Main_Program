@@ -241,29 +241,42 @@ def borders_of_fighter():
         
     if (fy<BOTTOM_EDGE):
         fighter.sety(-1*fy-5)
+        
+def first_time_scoreboard():
+    score.clear()
+    jet_prompt = "Jet: "
+    fighter_prompt = "Fighter: "
+    score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+    score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
+    winning()
 
-def score_board(pp1,pp2):
-    global p1, p2, paused
+def health_display(pp1,pp2):
+    global p1, p2
     if pp1!=p1 or pp2!=p2:
         score.clear()
         jet_prompt = "Jet: "
         fighter_prompt = "Fighter: "
         score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
         score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
-        if p1 <= 0:
-            jet.shape('explosion.gif')
-            ata_jet.shape('explosion.gif')
-            paused = True
-            score.clear()
-            score.goto(0,-50)
-            score.write("Fighter Wins!", align="center", font=("Courier", 150, "bold"))
-        if p2 <= 0:
-            fighter.shape('explosion.gif')
-            ata_fighter.shape('explosion.gif')
-            paused = True
-            score.clear()
-            score.goto(0,-50)
-            score.write("Jet Wins!", align="center", font=("Courier", 100, "bold"))
+        winning()
+        
+def winning():
+    global p1, p2, paused
+
+    if p1 <= 0:
+        jet.shape('explosion.gif')
+        ata_jet.shape('explosion.gif')
+        paused = True
+        score.clear()
+        score.goto(0,-50)
+        score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+    if p2 <= 0:
+        fighter.shape('explosion.gif')
+        ata_fighter.shape('explosion.gif')
+        paused = True
+        score.clear()
+        score.goto(0,-50)
+        score.write("Jet Wins!", align="center", font=("Courier", 100, "bold"))
             
 def pause():
    global paused
@@ -307,7 +320,7 @@ def ata_jet_seek():
              ataj_active = False   
              ata_jet.clear()
              global p2
-             p2-=10
+             p2-=15
         return (ataj_rel_ang)
 
 def ata_jet_borders(aj):
@@ -361,7 +374,7 @@ def ata_fighter_seek():
              ataf_active = False   
              ata_fighter.clear()
              global p1
-             p1-=10
+             p1-=15
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
@@ -391,7 +404,7 @@ def red_bullet_collision(turt):
     if abs(turt[0].xcor() - fighter.xcor())<12 and abs(turt[0].ycor() - fighter.ycor()) <12:
         collision = True
         global p2
-        p2-=2
+        p2-=5
     else:
         collision = False
     return collision
@@ -400,7 +413,7 @@ def black_bullet_collision(turt):
     if abs(turt[0].xcor() - jet.xcor())<12 and abs(turt[0].ycor() - jet.ycor()) <12:
         collision = True
         global p1
-        p1-=2
+        p1-=5
     else:
         collision = False
     return collision
@@ -476,12 +489,14 @@ ata_fighter.pu()
 ata_fighter.goto(fighter.xcor(),fighter.ycor())
 
 paused = False
+
+first_time_scoreboard()
 # Game Loop
 while(True):
     screen.update()
     turtle.listen()
     if not (paused):
         movement()
-        score_board(pp1,pp2)
+        health_display(pp1,pp2)
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
