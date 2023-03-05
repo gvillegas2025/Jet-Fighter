@@ -27,7 +27,6 @@ def movement():
     turtle.onkey(jet_shoot,"Down")
     jet_bullet_moving()
     turtle.onkey(ataj_activator,"/")
-    turtle.onkey(j_flares,'.')
     
     turtle.onkey(fighter_left,"a")
     turtle.onkey(fighter_right,"d")
@@ -406,8 +405,6 @@ def black_bullet_collision(turt):
         collision = False
     return collision
 
-def j_flares():
-    print('j')
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -477,9 +474,6 @@ ata_fighter = Turtle()
 ata_fighter.color('black')
 ata_fighter.pu()
 ata_fighter.goto(fighter.xcor(),fighter.ycor())
-
-#flares is a list of turtles, missle randomly locks onto one
-# the jet will be in the list until the flarse
 
 paused = False
 # Game Loop
