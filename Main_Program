@@ -3,6 +3,7 @@ import turtle
 from turtle import *
 import math
 from math import tan
+import re
 
 # Functions
 
@@ -12,10 +13,12 @@ def movement():
     jet.forward(FORWARD_SPEED)
     fighter.forward(FORWARD_SPEED)
     ata_jet_follow()
-    ata_jet_seek()
+    aj = ata_jet_seek()
+    ata_jet_borders(aj)
     ata_fighter_follow()
-    ata_fighter_seek()
-    
+    af = ata_fighter_seek()
+    ata_fighter_borders(af)
+
     turtle.onkey(jet_left,"Left")
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
@@ -35,6 +38,8 @@ def movement():
     
     borders_of_jet()
     borders_of_fighter()
+
+    
 
 #this function occurs when the left arrow key is pressed.
 #it takes no parameters but uses two global variables, jet turning
@@ -124,7 +129,7 @@ def jet_bullet_moving():
             turt.remove(turt[1])
             turt.append(False)
         turt[0].forward(FORWARD_SPEED*mover)
-        
+
 def fighter_right():
     global fighterturningangle, frtd, fltd
     frtd = frtd+1
@@ -235,13 +240,29 @@ def borders_of_fighter():
     if (fy<BOTTOM_EDGE):
         fighter.sety(-1*fy-5)
 
-def score_board():
-    global p1,p2
-    jet_prompt = "jet: " + str(p1)
-    fighter_prompt = "fighter: " + str(p2)
-    score_prompt = jet_prompt + " " + fighter_prompt
-    score.write (score_prompt, align="center", font=("Roboto", 20, "bold"))
-
+def score_board(pp1,pp2):
+    global p1, p2, paused
+    if pp1!=p1 or pp2!=p2:
+        score.clear()
+        jet_prompt = "Jet: "
+        fighter_prompt = "Fighter: "
+        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+        score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
+        if p1 <= 0:
+            jet.shape('explosion.gif')
+            ata_jet.shape('explosion.gif')
+            paused = True
+            score.clear()
+            score.goto(0,-50)
+            score.write("Fighter Wins!", align="center", font=("Courier", 150, "bold"))
+        if p2 <= 0:
+            fighter.shape('explosion.gif')
+            ata_fighter.shape('explosion.gif')
+            paused = True
+            score.clear()
+            score.goto(0,-50)
+            score.write("Jet Wins!", align="center", font=("Courier", 100, "bold"))
+            
 def pause():
    global paused
    if (paused == True):
@@ -251,7 +272,7 @@ def pause():
 def Quit():
     paused = True
     q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
-    if q == "yes":
+    if re.match("^[y, Y]", q):
         turtle.bye()
     else:
         paused = False
@@ -268,7 +289,7 @@ def ata_jet_follow():
         ata_jet.setheading(jet.heading())
 
 def ata_jet_seek():
-    global ataj_active
+    global ataj_active, p1
     if ataj_active:
         ata_jet.pd()
         ataj_xdist = ata_jet.xcor()-fighter.xcor()+.0000000000000000001
@@ -283,7 +304,33 @@ def ata_jet_seek():
         if abs(ata_jet.xcor() - fighter.xcor())<10 and abs(ata_jet.ycor() - fighter.ycor()) <10:
              ataj_active = False   
              ata_jet.clear()
- 
+             global p2
+             p2-=10
+        return (ataj_rel_ang)
+
+def ata_jet_borders(aj):
+    global ataj_active
+    ax = ata_jet.xcor()
+    ay = ata_jet.ycor()
+    if ataj_active:
+        ataj_rel_angle = int(aj)
+        turn_angle = ataj_rel_angle + 180
+        if (ax>RIGHT_EDGE): 
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(30)
+            
+        if (ax<LEFT_EDGE):    
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(30)
+            
+        if (ay>TOP_EDGE): 
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(30)
+          
+        if (ay<BOTTOM_EDGE): 
+            ata_jet.setheading(turn_angle)
+            ata_jet.forward(30)
+
 def ataf_activator():
     global ataf_active
     ataf_active = True
@@ -296,7 +343,7 @@ def ata_fighter_follow():
         ata_fighter.setheading(fighter.heading())
         
 def ata_fighter_seek():
-    global ataf_active
+    global ataf_active, p2
     if ataf_active:
         ata_fighter.pd()
         ataf_xdist = ata_fighter.xcor()-jet.xcor()+.0000000000000000001
@@ -311,7 +358,33 @@ def ata_fighter_seek():
         if abs(ata_fighter.xcor() - jet.xcor())<10 and abs(ata_fighter.ycor() - jet.ycor()) <10:
              ataf_active = False   
              ata_fighter.clear()
-
+             global p1
+             p1-=10
+        return (ataf_rel_ang)
+    
+def ata_fighter_borders(af):
+    global ataf_active
+    ax = ata_fighter.xcor()
+    ay = ata_fighter.ycor()
+    if ataf_active:
+        ataf_rel_angle = int(af)
+        turn_angle = ataf_rel_angle + 180
+        if (ax>RIGHT_EDGE): 
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(30)
+            
+        if (ax<LEFT_EDGE):    
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(30)
+            
+        if (ay>TOP_EDGE): 
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(30)
+          
+        if (ay<BOTTOM_EDGE): 
+            ata_fighter.setheading(turn_angle)
+            ata_fighter.forward(30)
+            
 def red_bullet_collision(turt):
     if abs(turt[0].xcor() - fighter.xcor())<12 and abs(turt[0].ycor() - fighter.ycor()) <12:
         collision = True
@@ -329,7 +402,7 @@ def black_bullet_collision(turt):
     else:
         collision = False
     return collision
-
+    
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -343,21 +416,22 @@ FORWARD_SPEED = 6
 jetturningangle = 0
 jltd = 0
 jrtd = 0
-p1 = 0
-p2 = 0
 ataj_active = False
-ataf_active = False
+
+p1 = 100
+p2 = 100
 
 fighterturningangle = 0
 fltd = 0
 frtd = 0
+ataf_active = False
 
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
 score.penup()
 score.hideturtle()
-score.goto (0,260)
+score.goto (0,300)
 
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
@@ -372,6 +446,7 @@ screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
 turtle.bgpic(picname="Sky.gif")
 screen.tracer(0)
+turtle.addshape(name="explosion.gif", shape=None)
 
 # Turtles
 jet = Turtle()
@@ -403,8 +478,9 @@ paused = False
 while(True):
     screen.update()
     turtle.listen()
+    pp1 = p1; pp2 = p2
     if not (paused):
         movement()
-      #  score_board()
+        score_board(pp1,pp2)
 
-# Make sure yall have all the rotations of the plane downloaded on your computer 
+# Make sure yall have all the rotations of the plane downloaded on your computer
