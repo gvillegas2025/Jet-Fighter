@@ -262,22 +262,46 @@ def health_display(pp1,pp2):
         
 def winning():
     global p1, p2, paused
+    fx = fighter.xcor()
+    fy = fighter.ycor()
+    jx = jet.xcor()
+    jy = jet.ycor()
 
     if p1 <= 0:
         jet.shape('explosion.gif')
         ata_jet.shape('explosion.gif')
+        ata_fighter.clear()
         paused = True
         score.clear()
-        score.goto(0,-50)
-        score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        
+        if jy > 0:
+            score.goto(0,-250)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        if jy < 0:
+            score.goto(0,200)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        if jy == 0:
+            score.goto(0,200)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+
     if p2 <= 0:
         fighter.shape('explosion.gif')
         ata_fighter.shape('explosion.gif')
+        ata_jet.clear()
         paused = True
         score.clear()
-        score.goto(0,-50)
-        score.write("Jet Wins!", align="center", font=("Courier", 100, "bold"))
-            
+        
+        if fy > 0:
+            score.goto(0,-250)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+        if fy < 0:
+            score.goto(0,200)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+        if fy == 0:
+            score.goto(0,200)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+
+                    
 def pause():
    global paused
    if (paused == True):
