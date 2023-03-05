@@ -10,6 +10,8 @@ import re
 #this function uses the turtle.listen() function and tells the
 #game what to do when a button is pressed. It also moves the planes forward
 def movement():
+    global pp1,pp2
+    pp1 = p1; pp2 = p2
     jet.forward(FORWARD_SPEED)
     fighter.forward(FORWARD_SPEED)
     ata_jet_follow()
@@ -18,15 +20,19 @@ def movement():
     ata_fighter_follow()
     af = ata_fighter_seek()
     ata_fighter_borders(af)
+
     turtle.onkey(jet_left,"Left")
     turtle.onkey(jet_right,"Right")
     turtle.onkey(jet_forward,"Up")
     turtle.onkey(jet_shoot,"Down")
-    turtle.onkey(ataj_activator,"/")    
+    jet_bullet_moving()
+    turtle.onkey(ataj_activator,"/")
+    
     turtle.onkey(fighter_left,"a")
     turtle.onkey(fighter_right,"d")
     turtle.onkey(fighter_forward,"w")
     turtle.onkey(fighter_shoot,"s")
+    fighter_bullet_moving()
     turtle.onkey(ataf_activator,"e")
     
     turtle.onkey(pause, "space")
@@ -80,7 +86,51 @@ def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
 
 def jet_shoot():
-    return
+    if len(jbullets)<50:
+        jbullets.append([Turtle(),False])
+        last_turtle = jbullets[len(jbullets)-1][0]
+        last_turtle.setheading(jet.heading())
+        last_turtle.pu()
+        last_turtle.shape('circle')
+        last_turtle.color('red')
+        last_turtle.shapesize(.1,.1,.1)
+        last_turtle.goto(jet.xcor(),jet.ycor())
+    elif len(jbullets)>=50:
+        first_elem = jbullets[0]
+        first_turtle = first_elem[0]
+        out_o_b = first_elem[1]
+        if (out_o_b):
+            first_turtle.goto(jet.xcor(),jet.ycor())
+            first_turtle.setheading(jet.heading())
+            jbullets.remove(first_elem)
+            jbullets.append([first_elem[0],False])
+
+def jet_bullet_moving():
+    for turt in jbullets:
+        turt[0].pu()
+        out_of_bounds_x = False
+        out_of_bounds_y = False
+        if turt[0].xcor()> 600 or turt[0].xcor()< -600:
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_x = True
+        elif turt[0].ycor()> 600 or turt[0].ycor()< -600:
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_y = True
+        elif red_bullet_collision(turt):
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_x = True
+        else:
+            mover = 2
+        if (out_of_bounds_x or out_of_bounds_y) or (turt[1]==True):
+            turt.remove(turt[1])
+            turt.append(True)
+        else:
+            turt.remove(turt[1])
+            turt.append(False)
+        turt[0].forward(FORWARD_SPEED*mover)
 
 def fighter_right():
     global fighterturningangle, frtd, fltd
@@ -115,7 +165,50 @@ def fighter_forward():
     fighter.forward(1.5*FORWARD_SPEED)
 
 def fighter_shoot():
-    return
+    if len(fbullets)<50:
+        fbullets.append([Turtle(),False])
+        last_turtle = fbullets[len(fbullets)-1][0]
+        last_turtle.setheading(fighter.heading())
+        last_turtle.pu()
+        last_turtle.shape('circle')
+        last_turtle.shapesize(.1,.1,.1)
+        last_turtle.goto(fighter.xcor(),fighter.ycor())
+    elif len(fbullets)>=50:
+        first_elem = fbullets[0]
+        first_turtle = first_elem[0]
+        out_o_b = first_elem[1]
+        if (out_o_b):
+            first_turtle.goto(fighter.xcor(),fighter.ycor())
+            first_turtle.setheading(fighter.heading())
+            fbullets.remove(first_elem)
+            fbullets.append([first_elem[0],False])
+
+def fighter_bullet_moving():
+    for turt in fbullets:
+        turt[0].pu()
+        out_of_bounds_x = False
+        out_of_bounds_y = False
+        if turt[0].xcor()> 600 or turt[0].xcor()< -600:
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_x = True
+        elif turt[0].ycor()> 600 or turt[0].ycor()< -600:
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_y = True
+        elif black_bullet_collision(turt):
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_x = True
+        else:
+            mover = 2
+        if (out_of_bounds_x or out_of_bounds_y) or (turt[1]==True):
+            turt.remove(turt[1])
+            turt.append(True)
+        else:
+            turt.remove(turt[1])
+            turt.append(False)
+        turt[0].forward(FORWARD_SPEED*mover)
 
 def borders_of_jet():
     jx = jet.xcor()
@@ -148,25 +241,60 @@ def borders_of_fighter():
         
     if (fy<BOTTOM_EDGE):
         fighter.sety(-1*fy-5)
-
-def score_board():
-    global p1, p2, paused
+        
+def first_time_scoreboard():
     score.clear()
     jet_prompt = "Jet: "
     fighter_prompt = "Fighter: "
     score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
-    if p1 == 20:
-        paused = True
+    winning()
+
+def health_display(pp1,pp2):
+    global p1, p2
+    if pp1!=p1 or pp2!=p2:
         score.clear()
-        score.goto(0,-50)
-        score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
-    if p2 == 20:
-        paused = True
-        score.clear()
-        score.goto(0,-50)
-        score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        jet_prompt = "Jet: "
+        fighter_prompt = "Fighter: "
+        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+        score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
+        winning()
         
+def winning():
+    global p1, p2, paused
+    fx = fighter.xcor()
+    fy = fighter.ycor()
+    jx = jet.xcor()
+    jy = jet.ycor()
+
+    if p1 <= 0:
+        jet.shape('explosion.gif')
+        ata_jet.shape('explosion.gif')
+        ata_fighter.clear()
+        paused = True
+        score.clear()
+        
+        if jy > 0:
+            score.goto(0,-250)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        if jy <= 0:
+            score.goto(0,200)
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+        
+
+    if p2 <= 0:
+        fighter.shape('explosion.gif')
+        ata_fighter.shape('explosion.gif')
+        ata_jet.clear()
+        paused = True
+        score.clear()
+        
+        if fy > 0:
+            score.goto(0,-250)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+        if fy <= 0:
+            score.goto(0,200)
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
 def pause():
    global paused
    if (paused == True):
@@ -208,8 +336,8 @@ def ata_jet_seek():
         if abs(ata_jet.xcor() - fighter.xcor())<10 and abs(ata_jet.ycor() - fighter.ycor()) <10:
              ataj_active = False   
              ata_jet.clear()
-             p1 = p1 + 1
-             score_board()
+             global p2
+             p2-=15
         return (ataj_rel_ang)
 
 def ata_jet_borders(aj):
@@ -262,8 +390,8 @@ def ata_fighter_seek():
         if abs(ata_fighter.xcor() - jet.xcor())<10 and abs(ata_fighter.ycor() - jet.ycor()) <10:
              ataf_active = False   
              ata_fighter.clear()
-             p2 = p2 +1
-             score_board()
+             global p1
+             p1-=15
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
@@ -289,6 +417,24 @@ def ata_fighter_borders(af):
             ata_fighter.setheading(turn_angle)
             ata_fighter.forward(30)
             
+def red_bullet_collision(turt):
+    if abs(turt[0].xcor() - fighter.xcor())<12 and abs(turt[0].ycor() - fighter.ycor()) <12:
+        collision = True
+        global p2
+        p2-=5
+    else:
+        collision = False
+    return collision
+
+def black_bullet_collision(turt):
+    if abs(turt[0].xcor() - jet.xcor())<12 and abs(turt[0].ycor() - jet.ycor()) <12:
+        collision = True
+        global p1
+        p1-=5
+    else:
+        collision = False
+    return collision
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -304,8 +450,8 @@ jltd = 0
 jrtd = 0
 ataj_active = False
 
-p1 = 0
-p2 = 0
+p1 = 100
+p2 = 100
 
 fighterturningangle = 0
 fltd = 0
@@ -322,6 +468,8 @@ score.goto (0,300)
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
 fighterturn = ["Fighter330.gif", "Fighter300.gif", "Fighter270.gif", "Fighter240.gif", "Fighter210.gif","Fighter180.gif","Fighter150.gif", "Fighter120.gif", "Fighter90.gif", "Fighter60.gif", "Fighter30.gif","Fighter0.gif"]
+jbullets = []
+fbullets = []
 
 # Screen
 screen = Screen()
@@ -330,6 +478,7 @@ screen.title("Jet Fighter")
 screen.bgcolor("skyblue")
 turtle.bgpic(picname="Sky.gif")
 screen.tracer(0)
+turtle.addshape(name="explosion.gif", shape=None)
 
 # Turtles
 jet = Turtle()
@@ -357,12 +506,14 @@ ata_fighter.pu()
 ata_fighter.goto(fighter.xcor(),fighter.ycor())
 
 paused = False
+
+first_time_scoreboard()
 # Game Loop
-score_board()
 while(True):
     screen.update()
     turtle.listen()
     if not (paused):
         movement()
+        health_display(pp1,pp2)
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
