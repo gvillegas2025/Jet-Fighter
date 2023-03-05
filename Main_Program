@@ -111,6 +111,10 @@ def jet_bullet_moving():
             turt[0].goto(650,0)
             mover = 0
             out_of_bounds_y = True
+        elif red_bullet_collision(turt):
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_x = True
         else:
             mover = 2
         if (out_of_bounds_x or out_of_bounds_y) or (turt[1]==True):
@@ -185,6 +189,10 @@ def fighter_bullet_moving():
             turt[0].goto(650,0)
             mover = 0
             out_of_bounds_y = True
+        elif black_bullet_collision(turt):
+            turt[0].goto(650,0)
+            mover = 0
+            out_of_bounds_x = True
         else:
             mover = 2
         if (out_of_bounds_x or out_of_bounds_y) or (turt[1]==True):
@@ -303,6 +311,25 @@ def ata_fighter_seek():
         if abs(ata_fighter.xcor() - jet.xcor())<10 and abs(ata_fighter.ycor() - jet.ycor()) <10:
              ataf_active = False   
              ata_fighter.clear()
+
+def red_bullet_collision(turt):
+    if abs(turt[0].xcor() - fighter.xcor())<12 and abs(turt[0].ycor() - fighter.ycor()) <12:
+        collision = True
+        global p2
+        p2-=2
+    else:
+        collision = False
+    return collision
+
+def black_bullet_collision(turt):
+    if abs(turt[0].xcor() - jet.xcor())<12 and abs(turt[0].ycor() - jet.ycor()) <12:
+        collision = True
+        global p1
+        p1-=2
+    else:
+        collision = False
+    return collision
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
