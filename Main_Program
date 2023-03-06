@@ -365,12 +365,8 @@ def ata_jet_borders(aj):
             ata_jet.forward(30)
 
 def ataf_activator():
-    global ataf_active, fighter_ata_cooldown
-    if fighter_ata_cooldown == True:
-        t = Timer(3, ataf_cooldown())
-        t.start()
-    if fighter_ata_cooldown == False:
-        ataf_active = True
+    global ataf_active
+    ataf_active = True
 
 def ata_fighter_follow():
     global ataf_active
@@ -380,7 +376,7 @@ def ata_fighter_follow():
         ata_fighter.setheading(fighter.heading())
         
 def ata_fighter_seek():
-    global ataf_active, p2, fighter_ata_cooldown
+    global ataf_active, p2
     if ataf_active:
         ata_fighter.pd()
         ataf_xdist = ata_fighter.xcor()-jet.xcor()+.0000000000000000001
@@ -398,7 +394,6 @@ def ata_fighter_seek():
              global p1
              p1-=15
              ata_fighter_follow()
-             fighter_ata_cooldown = True
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
