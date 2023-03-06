@@ -86,7 +86,7 @@ def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
 
 def jet_shoot():
-    if len(jbullets)<50:
+    if len(jbullets)<5:
         jbullets.append([Turtle(),False])
         last_turtle = jbullets[len(jbullets)-1][0]
         last_turtle.setheading(jet.heading())
@@ -95,7 +95,7 @@ def jet_shoot():
         last_turtle.color('red')
         last_turtle.shapesize(.1,.1,.1)
         last_turtle.goto(jet.xcor(),jet.ycor())
-    elif len(jbullets)>=50:
+    elif len(jbullets)>=5:
         first_elem = jbullets[0]
         first_turtle = first_elem[0]
         out_o_b = first_elem[1]
@@ -165,7 +165,7 @@ def fighter_forward():
     fighter.forward(1.5*FORWARD_SPEED)
 
 def fighter_shoot():
-    if len(fbullets)<50:
+    if len(fbullets)<5:
         fbullets.append([Turtle(),False])
         last_turtle = fbullets[len(fbullets)-1][0]
         last_turtle.setheading(fighter.heading())
@@ -173,7 +173,7 @@ def fighter_shoot():
         last_turtle.shape('circle')
         last_turtle.shapesize(.1,.1,.1)
         last_turtle.goto(fighter.xcor(),fighter.ycor())
-    elif len(fbullets)>=50:
+    elif len(fbullets)>=5:
         first_elem = fbullets[0]
         first_turtle = first_elem[0]
         out_o_b = first_elem[1]
@@ -244,9 +244,9 @@ def borders_of_fighter():
         
 def first_time_scoreboard():
     score.clear()
-    jet_prompt = "Jet: "
-    fighter_prompt = "Fighter: "
-    score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+    jet_prompt = p_names[0]
+    fighter_prompt = p_names[1]
+    score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
     winning()
 
@@ -254,9 +254,9 @@ def health_display(pp1,pp2):
     global p1, p2
     if pp1!=p1 or pp2!=p2:
         score.clear()
-        jet_prompt = "Jet: "
-        fighter_prompt = "Fighter: "
-        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+        jet_prompt = p_names[0]
+        fighter_prompt = p_names[1]
+        score_prompt = jet_prompt + ": " + str(p1) + "      " + fighter_prompt + ": " + str(p2)
         score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
         winning()
         
@@ -276,10 +276,10 @@ def winning():
         
         if jy > 0:
             score.goto(0,-250)
-            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
         if jy <= 0:
             score.goto(0,200)
-            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
         
 
     if p2 <= 0:
@@ -291,10 +291,10 @@ def winning():
         
         if fy > 0:
             score.goto(0,-250)
-            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
         if fy <= 0:
             score.goto(0,200)
-            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
 def pause():
    global paused
    if (paused == True):
@@ -338,6 +338,7 @@ def ata_jet_seek():
              ata_jet.clear()
              global p2
              p2-=15
+             ata_jet_follow()
         return (ataj_rel_ang)
 
 def ata_jet_borders(aj):
@@ -392,6 +393,7 @@ def ata_fighter_seek():
              ata_fighter.clear()
              global p1
              p1-=15
+             ata_fighter_follow()
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
@@ -435,6 +437,12 @@ def black_bullet_collision(turt):
         collision = False
     return collision
 
+def choose_names():
+    p1_name = screen.textinput("Player 1", "What is Player 1's name?")
+    p_names.append(p1_name)
+    p2_name = screen.textinput("Player 2", "What is Player 2's name?")
+    p_names.append(p2_name)
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -458,6 +466,7 @@ fltd = 0
 frtd = 0
 ataf_active = False
 
+
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
@@ -470,6 +479,7 @@ jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "J
 fighterturn = ["Fighter330.gif", "Fighter300.gif", "Fighter270.gif", "Fighter240.gif", "Fighter210.gif","Fighter180.gif","Fighter150.gif", "Fighter120.gif", "Fighter90.gif", "Fighter60.gif", "Fighter30.gif","Fighter0.gif"]
 jbullets = []
 fbullets = []
+p_names = []
 
 # Screen
 screen = Screen()
@@ -507,6 +517,7 @@ ata_fighter.goto(fighter.xcor(),fighter.ycor())
 
 paused = False
 
+choose_names()
 first_time_scoreboard()
 # Game Loop
 while(True):
