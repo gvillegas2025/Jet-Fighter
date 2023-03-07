@@ -486,7 +486,6 @@ def fighter_ata_lock():
             if turtle_inbound(flare_inb):
                 fighter_ata_targets.append(flare_inb)
     fighter_ata_targets.append(jet)
-    print(fighter_ata_targets)
     f_ata_target = random.choice(fighter_ata_targets)
     fighter_ata_targets.clear()
     return f_ata_target
