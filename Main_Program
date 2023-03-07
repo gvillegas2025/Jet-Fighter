@@ -4,6 +4,7 @@ from turtle import *
 import math
 from math import tan
 import re
+import random
 
 # Functions
 
@@ -27,6 +28,7 @@ def movement():
     turtle.onkey(jet_shoot,"Down")
     jet_bullet_moving()
     turtle.onkey(ataj_activator,"/")
+    turtle.onkey(j_flares,".")
     
     turtle.onkey(fighter_left,"a")
     turtle.onkey(fighter_right,"d")
@@ -34,9 +36,13 @@ def movement():
     turtle.onkey(fighter_shoot,"s")
     fighter_bullet_moving()
     turtle.onkey(ataf_activator,"e")
+    turtle.onkey(f_flares,"f")
     
     turtle.onkey(pause, "space")
     turtle.onkey(Quit, "Q")
+    
+    j_flares_movement()
+    f_flares_movement()
     
     borders_of_jet()
     borders_of_fighter()
@@ -86,7 +92,7 @@ def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
 
 def jet_shoot():
-    if len(jbullets)<5:
+    if len(jbullets)<50:
         jbullets.append([Turtle(),False])
         last_turtle = jbullets[len(jbullets)-1][0]
         last_turtle.setheading(jet.heading())
@@ -95,7 +101,7 @@ def jet_shoot():
         last_turtle.color('red')
         last_turtle.shapesize(.1,.1,.1)
         last_turtle.goto(jet.xcor(),jet.ycor())
-    elif len(jbullets)>=5:
+    elif len(jbullets)>=50:
         first_elem = jbullets[0]
         first_turtle = first_elem[0]
         out_o_b = first_elem[1]
@@ -165,7 +171,7 @@ def fighter_forward():
     fighter.forward(1.5*FORWARD_SPEED)
 
 def fighter_shoot():
-    if len(fbullets)<5:
+    if len(fbullets)<50:
         fbullets.append([Turtle(),False])
         last_turtle = fbullets[len(fbullets)-1][0]
         last_turtle.setheading(fighter.heading())
@@ -173,7 +179,7 @@ def fighter_shoot():
         last_turtle.shape('circle')
         last_turtle.shapesize(.1,.1,.1)
         last_turtle.goto(fighter.xcor(),fighter.ycor())
-    elif len(fbullets)>=5:
+    elif len(fbullets)>=50:
         first_elem = fbullets[0]
         first_turtle = first_elem[0]
         out_o_b = first_elem[1]
@@ -244,9 +250,9 @@ def borders_of_fighter():
         
 def first_time_scoreboard():
     score.clear()
-    jet_prompt = p_names[0]
-    fighter_prompt = p_names[1]
-    score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
+    jet_prompt = "Jet: "
+    fighter_prompt = "Fighter: "
+    score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
     winning()
 
@@ -254,9 +260,9 @@ def health_display(pp1,pp2):
     global p1, p2
     if pp1!=p1 or pp2!=p2:
         score.clear()
-        jet_prompt = p_names[0]
-        fighter_prompt = p_names[1]
-        score_prompt = jet_prompt + ": " + str(p1) + "      " + fighter_prompt + ": " + str(p2)
+        jet_prompt = "Jet: "
+        fighter_prompt = "Fighter: "
+        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
         score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
         winning()
         
@@ -276,11 +282,10 @@ def winning():
         
         if jy > 0:
             score.goto(0,-250)
-            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
         if jy <= 0:
             score.goto(0,200)
-            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
-        
+            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
 
     if p2 <= 0:
         fighter.shape('explosion.gif')
@@ -291,10 +296,10 @@ def winning():
         
         if fy > 0:
             score.goto(0,-250)
-            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
         if fy <= 0:
             score.goto(0,200)
-            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
 def pause():
    global paused
    if (paused == True):
@@ -324,12 +329,13 @@ def ata_jet_seek():
     global ataj_active, p1
     if ataj_active:
         ata_jet.pd()
-        ataj_xdist = ata_jet.xcor()-fighter.xcor()+.0000000000000000001
-        ataj_ydist = ata_jet.ycor()-fighter.ycor()+.0000000000000000001
+        j_ata_target = jet_ata_lock()
+        ataj_xdist = ata_jet.xcor()-j_ata_target.xcor()+.0000000000000000001
+        ataj_ydist = ata_jet.ycor()-j_ata_target.ycor()+.0000000000000000001
         ataj_rel_ang = math.degrees(tan(ataj_ydist/ataj_xdist))
-        if (ata_jet.xcor()>fighter.xcor() and ata_jet.ycor()>fighter.ycor()):
+        if (ata_jet.xcor()>j_ata_target.xcor() and ata_jet.ycor()>j_ata_target.ycor()):
             ataj_rel_ang-=180
-        if (ata_jet.xcor()>fighter.xcor() and ata_jet.ycor()<fighter.ycor()):
+        if (ata_jet.xcor()>j_ata_target.xcor() and ata_jet.ycor()<j_ata_target.ycor()):
             ataj_rel_ang-=90
         ata_jet.setheading(ataj_rel_ang)
         ata_jet.forward(FORWARD_SPEED*1.7)
@@ -338,7 +344,6 @@ def ata_jet_seek():
              ata_jet.clear()
              global p2
              p2-=15
-             ata_jet_follow()
         return (ataj_rel_ang)
 
 def ata_jet_borders(aj):
@@ -379,12 +384,13 @@ def ata_fighter_seek():
     global ataf_active, p2
     if ataf_active:
         ata_fighter.pd()
-        ataf_xdist = ata_fighter.xcor()-jet.xcor()+.0000000000000000001
-        ataf_ydist = ata_fighter.ycor()-jet.ycor()+.0000000000000000001
+        f_ata_target = fighter_ata_lock()
+        ataf_xdist = ata_fighter.xcor()-f_ata_target.xcor()+.0000000000000000001
+        ataf_ydist = ata_fighter.ycor()-f_ata_target.ycor()+.0000000000000000001
         ataf_rel_ang = math.degrees(tan(ataf_ydist/ataf_xdist))
-        if (ata_fighter.xcor()>jet.xcor() and ata_fighter.ycor()>jet.ycor()):
+        if (ata_fighter.xcor()>f_ata_target.xcor() and ata_fighter.ycor()>f_ata_target.ycor()):
             ataf_rel_ang-=180
-        if (ata_fighter.xcor()>jet.xcor() and ata_fighter.ycor()<jet.ycor()):
+        if (ata_fighter.xcor()>f_ata_target.xcor() and ata_fighter.ycor()<f_ata_target.ycor()):
             ataf_rel_ang-=90
         ata_fighter.setheading(ataf_rel_ang)
         ata_fighter.forward(FORWARD_SPEED*1.7)
@@ -393,7 +399,6 @@ def ata_fighter_seek():
              ata_fighter.clear()
              global p1
              p1-=15
-             ata_fighter_follow()
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
@@ -436,13 +441,126 @@ def black_bullet_collision(turt):
     else:
         collision = False
     return collision
+    
+def j_flares():
+    if (len(inactive_jet_flares) > 0):
+        launch_heading = 100
+        for turt in inactive_jet_flares[0]:
+            turt.showturtle()
+            turt.goto(jet.xcor(),jet.ycor())
+            turt.setheading(jet.heading()-launch_heading)
+            launch_heading*=-1
+        j_active_flares.append(inactive_jet_flares[0])
+        inactive_jet_flares.remove(inactive_jet_flares[0])
+        jet_HUD()
+    
+def jet_flares_formatting():
+    for turt_group in inactive_jet_flares:
+        for turt in turt_group:
+            turt.pu()
+            turt.shape('circle')
+            turt.color('white')
+            turt.shapesize(.2,.2,.2)
+            turt.goto(650,10)
 
-def choose_names():
-    p1_name = screen.textinput("Player 1", "What is Player 1's name?")
-    p_names.append(p1_name)
-    p2_name = screen.textinput("Player 2", "What is Player 2's name?")
-    p_names.append(p2_name)
+def j_flares_movement():
+    global j_flare_active
+    if len(j_active_flares) > 0:
+        for turt_group in j_active_flares:
+            group_loc = j_active_flares.index(turt_group)
+            breaker = False
+            if (jet_flares_speed[group_loc] < 0.65): 
+                turt_group[0].goto(650,20)
+                turt_group[1].goto(650,20)
+                breaker = True
+                jet_flares_speed[group_loc] = 0
+            for turt in turt_group:
+                if (breaker):
+                    break
+                turt.forward(.3*jet_flares_speed[group_loc])
+                jet_flares_speed[group_loc]*=.99
 
+def fighter_ata_lock():
+    for flare_group in j_active_flares:
+        for flare_inb in flare_group:
+            if turtle_inbound(flare_inb):
+                fighter_ata_targets.append(flare_inb)
+    fighter_ata_targets.append(jet)
+    print(fighter_ata_targets)
+    f_ata_target = random.choice(fighter_ata_targets)
+    fighter_ata_targets.clear()
+    return f_ata_target
+
+def f_flares():
+    if len(inactive_fighter_flares) > 0:
+        launch_heading = 100
+        for turt in inactive_fighter_flares[0]:
+            turt.showturtle()
+            turt.goto(fighter.xcor(),fighter.ycor())
+            turt.setheading(fighter.heading()-launch_heading)
+            launch_heading*=-1
+        f_active_flares.append(inactive_fighter_flares[0])
+        inactive_fighter_flares.remove(inactive_fighter_flares[0])
+        fighter_HUD()
+    
+def fighter_flares_formatting():
+    for turt_group in inactive_fighter_flares:
+        for turt in turt_group:
+            turt.pu()
+            turt.shape('circle')
+            turt.color('white')
+            turt.shapesize(.2,.2,.2)
+            turt.goto(650,-10)
+
+def f_flares_movement():
+    if len(f_active_flares)>0:
+        for turt_group in f_active_flares:
+            group_loc = f_active_flares.index(turt_group)
+            breaker = False
+            if (fighter_flares_speed[group_loc] < 0.65): 
+                turt_group[0].goto(650,20)
+                turt_group[1].goto(650,20)
+                breaker = True
+                fighter_flares_speed[group_loc] = 0
+            for turt in turt_group:
+                if (breaker):
+                    break
+                turt.forward(.3*fighter_flares_speed[group_loc])
+                fighter_flares_speed[group_loc]*=.99
+
+    
+def jet_ata_lock():
+    for flare_group in f_active_flares:
+        for flare_inb in flare_group:
+            if turtle_inbound(flare_inb):
+                jet_ata_targets.append(flare_inb)
+    jet_ata_targets.append(fighter)
+    j_ata_target = random.choice(jet_ata_targets)
+    jet_ata_targets.clear()
+    return j_ata_target
+
+def turtle_inbound(turtl):
+    x_inb = True
+    y_inb = True
+    if turtl.xcor()>RIGHT_EDGE or turtl.xcor()<LEFT_EDGE:
+        x_inb = False
+    if turtl.ycor()>TOP_EDGE or turtl.ycor()<BOTTOM_EDGE:
+        y_inb = False
+    if x_inb==False or y_inb==False:
+        return False
+    elif x_inb==True or y_inb==True:
+        return True
+
+def jet_HUD():
+    j_hud_pen.clear()
+    flare_info = 'flares: ' + str(len(inactive_jet_flares))
+    j_hud_pen.write(flare_info, align="center", font=("Roboto", 17, "bold"))
+
+def fighter_HUD():
+    f_hud_pen.clear()
+    flare_info = 'flares: ' + str(len(inactive_fighter_flares))
+    f_hud_pen.write(flare_info, align="center", font=("Roboto", 17, "bold"))
+    
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -450,7 +568,7 @@ BOTTOM_EDGE = -400
 TOP_EDGE = 400
 HEADING_STEP = 30
 FORWARD_SPEED = 6
-
+MAX_FLARE_NUM = 15
 
 # Global Variables
 jetturningangle = 0
@@ -466,7 +584,6 @@ fltd = 0
 frtd = 0
 ataf_active = False
 
-
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
@@ -479,7 +596,16 @@ jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "J
 fighterturn = ["Fighter330.gif", "Fighter300.gif", "Fighter270.gif", "Fighter240.gif", "Fighter210.gif","Fighter180.gif","Fighter150.gif", "Fighter120.gif", "Fighter90.gif", "Fighter60.gif", "Fighter30.gif","Fighter0.gif"]
 jbullets = []
 fbullets = []
-p_names = []
+
+inactive_jet_flares = [[Turtle(),Turtle()] for x in range(0,MAX_FLARE_NUM)]
+j_active_flares = []
+jet_flares_speed = [5 for x in range(0,MAX_FLARE_NUM)]
+jet_ata_targets = []
+
+inactive_fighter_flares = [[Turtle(),Turtle()] for x in range(0,MAX_FLARE_NUM)]
+f_active_flares = []
+fighter_flares_speed = [5 for x in range(0,MAX_FLARE_NUM)]
+fighter_ata_targets = []
 
 # Screen
 screen = Screen()
@@ -515,9 +641,24 @@ ata_fighter.color('black')
 ata_fighter.pu()
 ata_fighter.goto(fighter.xcor(),fighter.ycor())
 
-paused = False
+jet_flares_formatting()
+fighter_flares_formatting()
 
-choose_names()
+j_hud_pen = Turtle()
+j_hud_pen.color('black')
+j_hud_pen.shape('circle')
+j_hud_pen.shapesize(.05,.05,.05)
+j_hud_pen.pu()
+j_hud_pen.goto(350,-375)
+
+f_hud_pen = Turtle()
+f_hud_pen.color('black')
+f_hud_pen.shape('circle')
+f_hud_pen.shapesize(.05,.05,.05)
+f_hud_pen.pu()
+f_hud_pen.goto(-350,-375)
+
+paused = False
 first_time_scoreboard()
 # Game Loop
 while(True):
