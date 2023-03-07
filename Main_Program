@@ -5,6 +5,7 @@ import math
 from math import tan
 import re
 import random
+from threading import Timer
 
 # Functions
 
@@ -92,7 +93,7 @@ def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
 
 def jet_shoot():
-    if len(jbullets)<50:
+    if len(jbullets)<5:
         jbullets.append([Turtle(),False])
         last_turtle = jbullets[len(jbullets)-1][0]
         last_turtle.setheading(jet.heading())
@@ -101,7 +102,7 @@ def jet_shoot():
         last_turtle.color('red')
         last_turtle.shapesize(.1,.1,.1)
         last_turtle.goto(jet.xcor(),jet.ycor())
-    elif len(jbullets)>=50:
+    elif len(jbullets)>=5:
         first_elem = jbullets[0]
         first_turtle = first_elem[0]
         out_o_b = first_elem[1]
@@ -171,7 +172,7 @@ def fighter_forward():
     fighter.forward(1.5*FORWARD_SPEED)
 
 def fighter_shoot():
-    if len(fbullets)<50:
+    if len(fbullets)<5:
         fbullets.append([Turtle(),False])
         last_turtle = fbullets[len(fbullets)-1][0]
         last_turtle.setheading(fighter.heading())
@@ -179,7 +180,7 @@ def fighter_shoot():
         last_turtle.shape('circle')
         last_turtle.shapesize(.1,.1,.1)
         last_turtle.goto(fighter.xcor(),fighter.ycor())
-    elif len(fbullets)>=50:
+    elif len(fbullets)>=5:
         first_elem = fbullets[0]
         first_turtle = first_elem[0]
         out_o_b = first_elem[1]
@@ -250,9 +251,9 @@ def borders_of_fighter():
         
 def first_time_scoreboard():
     score.clear()
-    jet_prompt = "Jet: "
-    fighter_prompt = "Fighter: "
-    score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+    jet_prompt = p_names[0]
+    fighter_prompt = p_names[1]
+    score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
     winning()
 
@@ -260,9 +261,9 @@ def health_display(pp1,pp2):
     global p1, p2
     if pp1!=p1 or pp2!=p2:
         score.clear()
-        jet_prompt = "Jet: "
-        fighter_prompt = "Fighter: "
-        score_prompt = jet_prompt + str(p1) + "      " + fighter_prompt + str(p2)
+        jet_prompt = p_names[0]
+        fighter_prompt = p_names[1]
+        score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
         score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
         winning()
         
@@ -282,10 +283,10 @@ def winning():
         
         if jy > 0:
             score.goto(0,-250)
-            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
         if jy <= 0:
             score.goto(0,200)
-            score.write("Fighter Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
 
     if p2 <= 0:
         fighter.shape('explosion.gif')
@@ -296,10 +297,10 @@ def winning():
         
         if fy > 0:
             score.goto(0,-250)
-            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
         if fy <= 0:
             score.goto(0,200)
-            score.write("Jet Wins!", align="center", font=("Courier", 150, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
 def pause():
    global paused
    if (paused == True):
@@ -315,8 +316,32 @@ def Quit():
         paused = False
 
 def ataj_activator():
-    global ataj_active
-    ataj_active = True
+    global ataj_active, jet_ata_cooldown, jcooldown_happened, jtimer_active
+    if jtimer_active == False:
+        if jet_ata_cooldown == True:
+            ata_jet.hideturtle()
+            t = Timer(3, ataj_cooldown)
+            t.start()
+            ataj_active = False
+            jtimer_active = True
+
+        if jet_ata_cooldown == False:
+            ataj_active = True
+
+        if jcooldown_happened == True:
+            Timer(3, ataj_cooldown).cancel()
+            jcooldown_happened = False
+            jet_ata_cooldown = False
+            jtimer_active = False
+    else:
+        return
+
+def ataj_cooldown():
+    global jcooldown_happened, jtimer_active, jet_ata_cooldown
+    ata_jet.showturtle()
+    jcooldown_happened = True
+    jtimer_active = False
+    jet_ata_cooldown = False
 
 def ata_jet_follow():
     global ataj_active
@@ -326,7 +351,7 @@ def ata_jet_follow():
         ata_jet.setheading(jet.heading())
 
 def ata_jet_seek():
-    global ataj_active, p1
+    global ataj_active, p1, jet_ata_cooldown
     if ataj_active:
         ata_jet.pd()
         j_ata_target = jet_ata_lock()
@@ -344,6 +369,9 @@ def ata_jet_seek():
              ata_jet.clear()
              global p2
              p2-=15
+             ata_jet_follow()
+             jet_ata_cooldown = True
+             ataj_activator()
         return (ataj_rel_ang)
 
 def ata_jet_borders(aj):
@@ -370,8 +398,32 @@ def ata_jet_borders(aj):
             ata_jet.forward(30)
 
 def ataf_activator():
-    global ataf_active
-    ataf_active = True
+    global ataf_active, fighter_ata_cooldown, fcooldown_happened, ftimer_active
+    if ftimer_active == False:
+        if fighter_ata_cooldown == True:
+            ata_fighter.hideturtle()
+            t = Timer(3, ataf_cooldown)
+            t.start()
+            ataf_active = False
+            ftimer_active = True
+
+        if fighter_ata_cooldown == False:
+            ataf_active = True
+
+        if fcooldown_happened == True:
+            Timer(3, ataf_cooldown).cancel()
+            fcooldown_happened = False
+            fighter_ata_cooldown = False
+            ftimer_active = False
+    else:
+        return
+
+def ataf_cooldown():
+    global fcooldown_happened, ftimer_active, fighter_ata_cooldown
+    ata_fighter.showturtle()
+    fcooldown_happened = True
+    ftimer_active = False
+    fighter_ata_cooldown = False
 
 def ata_fighter_follow():
     global ataf_active
@@ -381,7 +433,7 @@ def ata_fighter_follow():
         ata_fighter.setheading(fighter.heading())
         
 def ata_fighter_seek():
-    global ataf_active, p2
+    global ataf_active, p2, fighter_ata_cooldown
     if ataf_active:
         ata_fighter.pd()
         f_ata_target = fighter_ata_lock()
@@ -399,6 +451,9 @@ def ata_fighter_seek():
              ata_fighter.clear()
              global p1
              p1-=15
+             ata_fighter_follow()
+             fighter_ata_cooldown = True
+             ataf_activator()
         return (ataf_rel_ang)
     
 def ata_fighter_borders(af):
@@ -559,7 +614,13 @@ def fighter_HUD():
     f_hud_pen.clear()
     flare_info = 'flares: ' + str(len(inactive_fighter_flares))
     f_hud_pen.write(flare_info, align="center", font=("Roboto", 17, "bold"))
-    
+
+def choose_names():
+    p1_name = screen.textinput("Player 1", "What is Player 1's name?(black jet)")
+    p_names.append(p1_name)
+    p2_name = screen.textinput("Player 2", "What is Player 2's name?(red jet)")
+    p_names.append(p2_name)
+
 # Constants
 RIGHT_EDGE= 400
 LEFT_EDGE = -400
@@ -583,12 +644,35 @@ fltd = 0
 frtd = 0
 ataf_active = False
 
+jet_ata_cooldown = False
+fighter_ata_cooldown = False
+
+fcooldown_happened = False
+jcooldown_happened = False
+
+ftimer_active = False
+jtimer_active = False
+
 #scoreboard
 score=turtle.Turtle()
 score.speed(0)
 score.penup()
 score.hideturtle()
 score.goto (0,300)
+
+jet_cooldown = Turtle()
+jet_cooldown.speed(0)
+jet_cooldown.pu()
+jet_cooldown.hideturtle()
+jet_cooldown.goto(-300, 305)
+jet_cooldown.color("black")
+
+fighter_cooldown = Turtle()
+fighter_cooldown.speed(0)
+fighter_cooldown.pu()
+fighter_cooldown.hideturtle()
+fighter_cooldown.color("red")
+fighter_cooldown.goto(300, 305)
 
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
@@ -605,6 +689,8 @@ inactive_fighter_flares = [[Turtle(),Turtle()] for x in range(0,MAX_FLARE_NUM)]
 f_active_flares = []
 fighter_flares_speed = [5 for x in range(0,MAX_FLARE_NUM)]
 fighter_ata_targets = []
+
+p_names = []
 
 # Screen
 screen = Screen()
@@ -658,6 +744,7 @@ f_hud_pen.pu()
 f_hud_pen.goto(-350,-375)
 
 paused = False
+choose_names()
 first_time_scoreboard()
 # Game Loop
 while(True):
