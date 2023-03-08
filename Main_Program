@@ -294,6 +294,8 @@ def first_time_scoreboard():
     fighter_prompt = p_names[1]
     score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
+    jet_HUD()
+    fighter_HUD()
 
 #this puts the health of both players on the top of the screen. It accepts pp1 and pp2,
 #as well as the globals p1 and p2. It also calls the winning function
