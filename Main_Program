@@ -8,6 +8,7 @@ import random
 from threading import Timer
 
 # Functions
+#all of the movement functions for the jet and fighter take the global variable paused
 
 #this function uses the turtle.listen() function and tells the
 #game what to do when a button is pressed. It also moves the planes forward
@@ -51,66 +52,80 @@ def movement():
     
 
 #this function occurs when the left arrow key is pressed.
-#it takes no parameters but uses two global variables, jet turning
-#angle and ltd. It subtracts frum the jet turning angle
+#it takes no parameters but uses three global variables, jet turning
+#angle, jltd, and jrtd. It subtracts frum the jet turning angle
 def jet_left():
-    global jetturningangle, jltd, jrtd
-    jltd = jltd+1
-    if jltd == 1 and jetturningangle == 0:
+    global jetturningangle, jltd, jrtd, paused
+    if not paused:
+        jltd = jltd+1
+        if jltd == 1 and jetturningangle == 0:
 
-        jetturningangle = 11
-    if jetturningangle == 0:
-        jetturningangle = 11
+            jetturningangle = 11
+        if jetturningangle == 0:
+            jetturningangle = 11
+        else:
+            jetturningangle = jetturningangle-1
+            
+        jet.left(HEADING_STEP)
+        turtle.addshape(name=jetturn[jetturningangle], shape=None) 
+        jet.shape(jetturn[jetturningangle])
+        jrtd = jrtd+1
     else:
-        jetturningangle = jetturningangle-1
-        
-    jet.left(HEADING_STEP)
-    turtle.addshape(name=jetturn[jetturningangle], shape=None) 
-    jet.shape(jetturn[jetturningangle])
-    jrtd = jrtd+1
+        return
 
 
 #This functions occurs when the right arrow key is pressed. It has
-#no parameters but uses the global variable jet turning angle
+#no parameters but uses the global variables jet turning angle, jrtd, and jltd
 #It adds to jet turning angle and turns the plane right 30 degrees
 def jet_right():
-    global jetturningangle, jrtd, jltd
-    jrtd = jrtd+1
-    if jetturningangle == 0 and jrtd == 1:
-        jetturningangle = 0
-    if jetturningangle <= 11 and jrtd !=1:
-        jetturningangle = jetturningangle+1
-    if jetturningangle == 12:
-        jetturningangle = 0
-    jet.right(HEADING_STEP)
-    turtle.addshape(name=jetturn[jetturningangle], shape=None) 
-    jet.shape(jetturn[jetturningangle])
-    jltd = jltd +1
+    global jetturningangle, jrtd, jltd, paused
+    if not paused:
+        jrtd = jrtd+1
+        if jetturningangle == 0 and jrtd == 1:
+            jetturningangle = 0
+        if jetturningangle <= 11 and jrtd !=1:
+            jetturningangle = jetturningangle+1
+        if jetturningangle == 12:
+            jetturningangle = 0
+        jet.right(HEADING_STEP)
+        turtle.addshape(name=jetturn[jetturningangle], shape=None) 
+        jet.shape(jetturn[jetturningangle])
+        jltd = jltd +1
+    else:
+        return
 
 #this function serves as a kind of boost when the up arrow key is pressed.
 #it moves the jet forward 1.5 times the forward speed
 def jet_forward():
-    jet.forward(1.5*FORWARD_SPEED)
+    global paused
+    if not paused:
+        jet.forward(1.5*FORWARD_SPEED)
+    else:
+        return
 
 def jet_shoot():
-    if len(jbullets)<5:
-        jbullets.append([Turtle(),False])
-        last_turtle = jbullets[len(jbullets)-1][0]
-        last_turtle.setheading(jet.heading())
-        last_turtle.pu()
-        last_turtle.shape('circle')
-        last_turtle.color('red')
-        last_turtle.shapesize(.1,.1,.1)
-        last_turtle.goto(jet.xcor(),jet.ycor())
-    elif len(jbullets)>=5:
-        first_elem = jbullets[0]
-        first_turtle = first_elem[0]
-        out_o_b = first_elem[1]
-        if (out_o_b):
-            first_turtle.goto(jet.xcor(),jet.ycor())
-            first_turtle.setheading(jet.heading())
-            jbullets.remove(first_elem)
-            jbullets.append([first_elem[0],False])
+    global paused
+    if not paused:
+        if len(jbullets)<5:
+            jbullets.append([Turtle(),False])
+            last_turtle = jbullets[len(jbullets)-1][0]
+            last_turtle.setheading(jet.heading())
+            last_turtle.pu()
+            last_turtle.shape('circle')
+            last_turtle.color('red')
+            last_turtle.shapesize(.1,.1,.1)
+            last_turtle.goto(jet.xcor(),jet.ycor())
+        elif len(jbullets)>=5:
+            first_elem = jbullets[0]
+            first_turtle = first_elem[0]
+            out_o_b = first_elem[1]
+            if (out_o_b):
+                first_turtle.goto(jet.xcor(),jet.ycor())
+                first_turtle.setheading(jet.heading())
+                jbullets.remove(first_elem)
+                jbullets.append([first_elem[0],False])
+        else:
+            return
 
 def jet_bullet_moving():
     for turt in jbullets:
@@ -139,56 +154,75 @@ def jet_bullet_moving():
             turt.append(False)
         turt[0].forward(FORWARD_SPEED*mover)
 
+#this function changes the image and heading of the fighter 30 degrees right. It takes
+#3 global variables. 
 def fighter_right():
-    global fighterturningangle, frtd, fltd
-    frtd = frtd+1
-    if frtd == 1 and fighterturningangle == 0:
-        fighterturningangle = 11
-    if fighterturningangle == 0:
-        fighterturningangle = 11
+    global fighterturningangle, frtd, fltd, paused
+    if not paused:
+        frtd = frtd+1
+        if frtd == 1 and fighterturningangle == 0:
+            fighterturningangle = 11
+        if fighterturningangle == 0:
+            fighterturningangle = 11
+        else:
+            fighterturningangle = fighterturningangle-1
+            
+        fighter.right(HEADING_STEP)
+        turtle.addshape(name=fighterturn[fighterturningangle], shape=None) 
+        fighter.shape(fighterturn[fighterturningangle])
+        fltd = fltd+1
     else:
-        fighterturningangle = fighterturningangle-1
-        
-    fighter.right(HEADING_STEP)
-    turtle.addshape(name=fighterturn[fighterturningangle], shape=None) 
-    fighter.shape(fighterturn[fighterturningangle])
-    fltd = fltd+1
+        return
 
+#this function changes the image and heading of the fighter 30 degrees left. It takes
+#3 global variable
 def fighter_left():
-    global fighterturningangle, fltd, frtd
-    fltd = fltd+1
-    if fighterturningangle == 0 and fltd == 1:
-        fighterturningangle = 0
-    if fighterturningangle <= 11 and fltd != 1:
-        fighterturningangle = fighterturningangle+1
-    if fighterturningangle == 12:
-        fighterturningangle = 0
-    fighter.left(HEADING_STEP)
-    turtle.addshape(name=fighterturn[fighterturningangle], shape=None) 
-    fighter.shape(fighterturn[fighterturningangle])
-    frtd = frtd+1
-    
+    global fighterturningangle, fltd, frtd, paused
+    if not paused:
+        fltd = fltd+1
+        if fighterturningangle == 0 and fltd == 1:
+            fighterturningangle = 0
+        if fighterturningangle <= 11 and fltd != 1:
+            fighterturningangle = fighterturningangle+1
+        if fighterturningangle == 12:
+            fighterturningangle = 0
+        fighter.left(HEADING_STEP)
+        turtle.addshape(name=fighterturn[fighterturningangle], shape=None) 
+        fighter.shape(fighterturn[fighterturningangle])
+        frtd = frtd+1
+    else:
+        return
+
+#this fighter serves as a boost for the fighter. It takes no variables.
 def fighter_forward():
-    fighter.forward(1.5*FORWARD_SPEED)
+    global paused
+    if not paused:
+        fighter.forward(1.5*FORWARD_SPEED)
+    else:
+        return
 
 def fighter_shoot():
-    if len(fbullets)<5:
-        fbullets.append([Turtle(),False])
-        last_turtle = fbullets[len(fbullets)-1][0]
-        last_turtle.setheading(fighter.heading())
-        last_turtle.pu()
-        last_turtle.shape('circle')
-        last_turtle.shapesize(.1,.1,.1)
-        last_turtle.goto(fighter.xcor(),fighter.ycor())
-    elif len(fbullets)>=5:
-        first_elem = fbullets[0]
-        first_turtle = first_elem[0]
-        out_o_b = first_elem[1]
-        if (out_o_b):
-            first_turtle.goto(fighter.xcor(),fighter.ycor())
-            first_turtle.setheading(fighter.heading())
-            fbullets.remove(first_elem)
-            fbullets.append([first_elem[0],False])
+    global paused
+    if not paused:
+        if len(fbullets)<5:
+            fbullets.append([Turtle(),False])
+            last_turtle = fbullets[len(fbullets)-1][0]
+            last_turtle.setheading(fighter.heading())
+            last_turtle.pu()
+            last_turtle.shape('circle')
+            last_turtle.shapesize(.1,.1,.1)
+            last_turtle.goto(fighter.xcor(),fighter.ycor())
+        elif len(fbullets)>=5:
+            first_elem = fbullets[0]
+            first_turtle = first_elem[0]
+            out_o_b = first_elem[1]
+            if (out_o_b):
+                first_turtle.goto(fighter.xcor(),fighter.ycor())
+                first_turtle.setheading(fighter.heading())
+                fbullets.remove(first_elem)
+                fbullets.append([first_elem[0],False])
+    else:
+        return
 
 def fighter_bullet_moving():
     for turt in fbullets:
@@ -217,6 +251,8 @@ def fighter_bullet_moving():
             turt.append(False)
         turt[0].forward(FORWARD_SPEED*mover)
 
+#this function detects a collision between any edge and the jet, and sends the jet
+#to the opposite side
 def borders_of_jet():
     jx = jet.xcor()
     jy = jet.ycor()
@@ -233,6 +269,8 @@ def borders_of_jet():
     if (jy<BOTTOM_EDGE):
         jet.sety(-1*jy-5)
 
+#this function detects a collision between any edge and the fighter, and sends the
+#fighter to the opposite side
 def borders_of_fighter():
     fx = fighter.xcor()
     fy = fighter.ycor()
@@ -249,14 +287,16 @@ def borders_of_fighter():
     if (fy<BOTTOM_EDGE):
         fighter.sety(-1*fy-5)
         
+#this handles the scoreboard outside of the main loop to prevent lag
 def first_time_scoreboard():
     score.clear()
     jet_prompt = p_names[0]
     fighter_prompt = p_names[1]
     score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
-    winning()
 
+#this puts the health of both players on the top of the screen. It accepts pp1 and pp2,
+#as well as the globals p1 and p2. It also calls the winning function
 def health_display(pp1,pp2):
     global p1, p2
     if pp1!=p1 or pp2!=p2:
@@ -266,7 +306,10 @@ def health_display(pp1,pp2):
         score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
         score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
         winning()
-        
+
+#this function is called in health_display and takes the globals p1, p2, and paused.
+#it checks if either of the players have no health left and changes their planes into
+#explosions.    
 def winning():
     global p1, p2, paused
     fx = fighter.xcor()
@@ -301,12 +344,17 @@ def winning():
         if fy <= 0:
             score.goto(0,200)
             score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
+
+#this function is called when the space bar is pressed. It changes the paused global
+#variable depending on the condition
 def pause():
    global paused
    if (paused == True):
       paused = False
    elif (paused == False):
       paused = True
+
+#this function occers when shift+q is pressed. It asks the users if they want to quit
 def Quit():
     paused = True
     q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
@@ -315,27 +363,38 @@ def Quit():
     else:
         paused = False
 
+        
+#this is the activator for the jet's ata missile. It occurs when "/" is hit.
+#it takes the globals ataj_active, jet_ata_cooldown, jcooldown_happened, and
+#jtimer_active
+#it uses the threading import to create a timer for the cooldown function.
 def ataj_activator():
-    global ataj_active, jet_ata_cooldown, jcooldown_happened, jtimer_active
-    if jtimer_active == False:
-        if jet_ata_cooldown == True:
-            ata_jet.hideturtle()
-            t = Timer(3, ataj_cooldown)
-            t.start()
-            ataj_active = False
-            jtimer_active = True
+    global ataj_active, jet_ata_cooldown, jcooldown_happened, jtimer_active, paused
+    if not paused:
+        if jtimer_active == False:
+            if jet_ata_cooldown == True:
+                ata_jet.hideturtle()
+                t = Timer(7, ataj_cooldown)
+                t.start()
+                ataj_active = False
+                jtimer_active = True
 
-        if jet_ata_cooldown == False:
-            ataj_active = True
+            if jet_ata_cooldown == False:
+                ataj_active = True
 
-        if jcooldown_happened == True:
-            Timer(3, ataj_cooldown).cancel()
-            jcooldown_happened = False
-            jet_ata_cooldown = False
-            jtimer_active = False
+            if jcooldown_happened == True:
+                Timer(7, ataj_cooldown).cancel()
+                jcooldown_happened = False
+                jet_ata_cooldown = False
+                jtimer_active = False
+        else:
+            return
     else:
         return
 
+#this function is called by the timer and uses the variables jcooldown_happened,
+#jtimer_active, and jet_ata_cooldown.
+#it changes the variables for conditionals in other functions and makes the ata visible
 def ataj_cooldown():
     global jcooldown_happened, jtimer_active, jet_ata_cooldown
     ata_jet.showturtle()
@@ -349,6 +408,7 @@ def ata_jet_follow():
         ata_jet.pu()
         ata_jet.goto(jet.xcor(),jet.ycor())
         ata_jet.setheading(jet.heading())
+        
 
 def ata_jet_seek():
     global ataj_active, p1, jet_ata_cooldown
@@ -374,6 +434,8 @@ def ata_jet_seek():
              ataj_activator()
         return (ataj_rel_ang)
 
+#this function is to prevent the ata from going far off of the screen. It takes aj,
+#which is ataj_rel_angle, and adds 180 degrees to it so it bounces off of the wall.
 def ata_jet_borders(aj):
     global ataj_active
     ax = ata_jet.xcor()
@@ -397,27 +459,37 @@ def ata_jet_borders(aj):
             ata_jet.setheading(turn_angle)
             ata_jet.forward(30)
 
+#this is the activator for the fighter's ata missile. It occurs when "e" is hit.
+#it takes the globals ataf_active, fighter_ata_cooldown, fcooldown_happened, and
+#ftimer_active
+#it uses the threading import to create a timer for the cooldown function.
 def ataf_activator():
-    global ataf_active, fighter_ata_cooldown, fcooldown_happened, ftimer_active
-    if ftimer_active == False:
-        if fighter_ata_cooldown == True:
-            ata_fighter.hideturtle()
-            t = Timer(3, ataf_cooldown)
-            t.start()
-            ataf_active = False
-            ftimer_active = True
+    global ataf_active, fighter_ata_cooldown, fcooldown_happened, ftimer_active, paused
+    if not paused:
+        if ftimer_active == False:
+            if fighter_ata_cooldown == True:
+                ata_fighter.hideturtle()
+                t = Timer(7, ataf_cooldown)
+                t.start()
+                ataf_active = False
+                ftimer_active = True
 
-        if fighter_ata_cooldown == False:
-            ataf_active = True
+            if fighter_ata_cooldown == False:
+                ataf_active = True
 
-        if fcooldown_happened == True:
-            Timer(3, ataf_cooldown).cancel()
-            fcooldown_happened = False
-            fighter_ata_cooldown = False
-            ftimer_active = False
+            if fcooldown_happened == True:
+                Timer(7, ataf_cooldown).cancel()
+                fcooldown_happened = False
+                fighter_ata_cooldown = False
+                ftimer_active = False
+        else:
+            return
     else:
         return
 
+#this function is called by the timer and uses the variables fcooldown_happened,
+#ftimer_active, and fighter_ata_cooldown.
+#it changes the variables for conditionals in other functions and makes the ata visible
 def ataf_cooldown():
     global fcooldown_happened, ftimer_active, fighter_ata_cooldown
     ata_fighter.showturtle()
@@ -455,7 +527,9 @@ def ata_fighter_seek():
              fighter_ata_cooldown = True
              ataf_activator()
         return (ataf_rel_ang)
-    
+
+#this function is to prevent the ata from going far off of the screen. It takes af,
+#which is ataf_rel_angle, and adds 180 degrees to it so it bounces off of the wall.
 def ata_fighter_borders(af):
     global ataf_active
     ax = ata_fighter.xcor()
@@ -498,16 +572,20 @@ def black_bullet_collision(turt):
     return collision
     
 def j_flares():
-    if (len(inactive_jet_flares) > 0):
-        launch_heading = 100
-        for turt in inactive_jet_flares[0]:
-            turt.showturtle()
-            turt.goto(jet.xcor(),jet.ycor())
-            turt.setheading(jet.heading()-launch_heading)
-            launch_heading*=-1
-        j_active_flares.append(inactive_jet_flares[0])
-        inactive_jet_flares.remove(inactive_jet_flares[0])
-        jet_HUD()
+    global paused
+    if not paused:
+        if (len(inactive_jet_flares) > 0):
+            launch_heading = 100
+            for turt in inactive_jet_flares[0]:
+                turt.showturtle()
+                turt.goto(jet.xcor(),jet.ycor())
+                turt.setheading(jet.heading()-launch_heading)
+                launch_heading*=-1
+            j_active_flares.append(inactive_jet_flares[0])
+            inactive_jet_flares.remove(inactive_jet_flares[0])
+            jet_HUD()
+    else:
+        return
     
 def jet_flares_formatting():
     for turt_group in inactive_jet_flares:
@@ -546,16 +624,20 @@ def fighter_ata_lock():
     return f_ata_target
 
 def f_flares():
-    if len(inactive_fighter_flares) > 0:
-        launch_heading = 100
-        for turt in inactive_fighter_flares[0]:
-            turt.showturtle()
-            turt.goto(fighter.xcor(),fighter.ycor())
-            turt.setheading(fighter.heading()-launch_heading)
-            launch_heading*=-1
-        f_active_flares.append(inactive_fighter_flares[0])
-        inactive_fighter_flares.remove(inactive_fighter_flares[0])
-        fighter_HUD()
+    global paused
+    if not paused:
+        if len(inactive_fighter_flares) > 0:
+            launch_heading = 100
+            for turt in inactive_fighter_flares[0]:
+                turt.showturtle()
+                turt.goto(fighter.xcor(),fighter.ycor())
+                turt.setheading(fighter.heading()-launch_heading)
+                launch_heading*=-1
+            f_active_flares.append(inactive_fighter_flares[0])
+            inactive_fighter_flares.remove(inactive_fighter_flares[0])
+            fighter_HUD()
+    else:
+        return
     
 def fighter_flares_formatting():
     for turt_group in inactive_fighter_flares:
@@ -615,6 +697,7 @@ def fighter_HUD():
     flare_info = 'flares: ' + str(len(inactive_fighter_flares))
     f_hud_pen.write(flare_info, align="center", font=("Roboto", 17, "bold"))
 
+#this function asks the players for their usernames and puts them into a list
 def choose_names():
     p1_name = screen.textinput("Player 1", "What is Player 1's name?(black jet)")
     p_names.append(p1_name)
@@ -652,6 +735,8 @@ jcooldown_happened = False
 
 ftimer_active = False
 jtimer_active = False
+
+paused = False
 
 #scoreboard
 score=turtle.Turtle()
@@ -692,7 +777,7 @@ fighter_ata_targets = []
 
 p_names = []
 
-# Screen
+#Create the Screen and explosion shape
 screen = Screen()
 screen.setup(800,800)
 screen.title("Jet Fighter")
@@ -701,7 +786,7 @@ turtle.bgpic(picname="Sky.gif")
 screen.tracer(0)
 turtle.addshape(name="explosion.gif", shape=None)
 
-# Turtles
+#Create the Turtles
 jet = Turtle()
 turtle.addshape(name="Jet0.gif", shape=None) 
 jet.shape("Jet0.gif") 
@@ -735,7 +820,6 @@ j_hud_pen.shape('circle')
 j_hud_pen.shapesize(.05,.05,.05)
 j_hud_pen.pu()
 j_hud_pen.goto(350,-375)
-
 f_hud_pen = Turtle()
 f_hud_pen.color('black')
 f_hud_pen.shape('circle')
@@ -743,9 +827,10 @@ f_hud_pen.shapesize(.05,.05,.05)
 f_hud_pen.pu()
 f_hud_pen.goto(-350,-375)
 
-paused = False
+#call choosing names and the first time scoreboard
 choose_names()
 first_time_scoreboard()
+
 # Game Loop
 while(True):
     screen.update()
