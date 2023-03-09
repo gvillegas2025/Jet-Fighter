@@ -325,7 +325,7 @@ def winning():
         ata_fighter.clear()
         paused = True
         score.clear()
-        
+        score.color("red")
         if jy > 0:
             score.goto(0,-250)
             score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
@@ -822,7 +822,6 @@ j_hud_pen.shape('circle')
 j_hud_pen.shapesize(.05,.05,.05)
 j_hud_pen.pu()
 j_hud_pen.goto(350,-375)
-
 f_hud_pen = Turtle()
 f_hud_pen.color('red')
 f_hud_pen.shape('circle')
