@@ -576,7 +576,7 @@ def ata_fighter_borders(af):
             
 # checks for whether the bullets shot from the jet hit the fighter, and reduces the health accordingly
 def red_bullet_collision(turt):
-    if abs(turt[0].xcor() - fighter.xcor())<12 and abs(turt[0].ycor() - fighter.ycor()) <12:
+    if abs(turt[0].xcor() - fighter.xcor())<20 and abs(turt[0].ycor() - fighter.ycor()) <20:
         collision = True
         global p2
         p2-=5
@@ -586,7 +586,7 @@ def red_bullet_collision(turt):
 
 # checks for whether the bullets shot from the fighter hit the jet, and reduces the health accordingly
 def black_bullet_collision(turt):
-    if abs(turt[0].xcor() - jet.xcor())<12 and abs(turt[0].ycor() - jet.ycor()) <12:
+    if abs(turt[0].xcor() - jet.xcor())<20 and abs(turt[0].ycor() - jet.ycor()) <20:
         collision = True
         global p1
         p1-=5
@@ -888,4 +888,3 @@ while(True):
         health_display(pp1,pp2)
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
-# We could have put the planes in a list instead of making functions for both planes.
