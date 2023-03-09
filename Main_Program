@@ -329,10 +329,10 @@ def winning():
         
         if jy > 0:
             score.goto(0,-250)
-            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 75, "bold"))
         if jy <= 0:
             score.goto(0,200)
-            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 75, "bold"))
 
     if p2 <= 0:
         fighter.shape('explosion.gif')
@@ -343,10 +343,10 @@ def winning():
         
         if fy > 0:
             score.goto(0,-250)
-            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 75, "bold"))
         if fy <= 0:
             score.goto(0,200)
-            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 75, "bold"))
 
 #this function is called when the space bar is pressed. It changes the paused global
 #variable depending on the condition
