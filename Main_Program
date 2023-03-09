@@ -1,4 +1,4 @@
-#Jet Fighter
+# Jet Fighter
 import turtle
 from turtle import *
 import math
@@ -10,7 +10,9 @@ from threading import Timer
 # Functions
 
 #this function uses the turtle.listen() function and tells the
-#game what to do when a button is pressed. It also moves the planes forward
+#game what to do when a button is pressed. It also moves the planes forward,
+#calls all the functions that handle flares, air-to-air missiles, pausing, and quitting
+#also handles borders of the planes
 def movement():
     global pp1,pp2
     pp1 = p1; pp2 = p2
@@ -91,7 +93,10 @@ def jet_right():
 #it moves the jet forward 1.5 times the forward speed
 def jet_forward():
     jet.forward(1.5*FORWARD_SPEED)
-
+    
+#this function is called when 's' is pressed
+#this function spawns in bullets for the jet if there are no bullets spawned
+#if there are bullets, they are teleported to the plane and set to the same heading as the plane
 def jet_shoot():
     if len(jbullets)<5:
         jbullets.append([Turtle(),False])
@@ -111,27 +116,27 @@ def jet_shoot():
             first_turtle.setheading(jet.heading())
             jbullets.remove(first_elem)
             jbullets.append([first_elem[0],False])
-
+            
+#this function handles bullet movement for the jet and checks whether bullets are in bounds
+#if bullets are out of bounds, and what happens upon collision with the fighter
+#then they are kept at a coordinate off screen until shot
 def jet_bullet_moving():
     for turt in jbullets:
+        print(jbullets)
         turt[0].pu()
         out_of_bounds_x = False
         out_of_bounds_y = False
-        if turt[0].xcor()> 600 or turt[0].xcor()< -600:
+        if not turtle_inbound(turt[0]):
             turt[0].goto(650,0)
             mover = 0
-            out_of_bounds_x = True
-        elif turt[0].ycor()> 600 or turt[0].ycor()< -600:
-            turt[0].goto(650,0)
-            mover = 0
-            out_of_bounds_y = True
+            out_of_bounds = True
         elif red_bullet_collision(turt):
             turt[0].goto(650,0)
             mover = 0
             out_of_bounds_x = True
         else:
             mover = 2
-        if (out_of_bounds_x or out_of_bounds_y) or (turt[1]==True):
+        if out_of_bounds or (turt[1]==True):
             turt.remove(turt[1])
             turt.append(True)
         else:
@@ -170,7 +175,10 @@ def fighter_left():
     
 def fighter_forward():
     fighter.forward(1.5*FORWARD_SPEED)
-
+    
+#this function is called when 's' is pressed
+#this function spawns in bullets for the fighter if there are no bullets spawned
+#if there are bullets, they are teleported to the plane and set to the same heading as the plane
 def fighter_shoot():
     if len(fbullets)<5:
         fbullets.append([Turtle(),False])
@@ -189,7 +197,10 @@ def fighter_shoot():
             first_turtle.setheading(fighter.heading())
             fbullets.remove(first_elem)
             fbullets.append([first_elem[0],False])
-
+            
+#this function handles bullet movement for the jet and checks whether bullets are in bounds
+#if bullets are out of bounds, and what happens upon collision with the jet
+#then they are kept at a coordinate off screen until shot
 def fighter_bullet_moving():
     for turt in fbullets:
         turt[0].pu()
@@ -343,6 +354,8 @@ def ataj_cooldown():
     jtimer_active = False
     jet_ata_cooldown = False
 
+#When the jet's air-to-air (ata) missile is inactive, it stays onboard the plane
+#this function keeps the ata on the jet until launched
 def ata_jet_follow():
     global ataj_active
     if (ataj_active==False):
@@ -350,6 +363,11 @@ def ata_jet_follow():
         ata_jet.goto(jet.xcor(),jet.ycor())
         ata_jet.setheading(jet.heading())
 
+# to find the angle of which the ata should go, trigonometry is used. 
+# using the x and y distance, and tangent, we can get the desired angle. 
+# the consecutive set of if statments is to make sure the ata is on the right course
+# jet_ata_lock() is a function that makes sure flares are a possible target for the ata
+# if a collision is detected, health is reduced accordingly
 def ata_jet_seek():
     global ataj_active, p1, jet_ata_cooldown
     if ataj_active:
@@ -425,6 +443,8 @@ def ataf_cooldown():
     ftimer_active = False
     fighter_ata_cooldown = False
 
+#When the fighter's air-to-air (ata) missile is inactive, it stays onboard the plane
+#this function keeps the ata on the jet until launched
 def ata_fighter_follow():
     global ataf_active
     if (ataf_active==False):
@@ -432,6 +452,11 @@ def ata_fighter_follow():
         ata_fighter.goto(fighter.xcor(),fighter.ycor())
         ata_fighter.setheading(fighter.heading())
         
+# to find the angle of which the ata should go, trigonometry is used. 
+# using the x and y distance, and tangent, we can get the desired angle. 
+# the consecutive set of if statments is to make sure the ata is on the right course
+# fighter_ata_lock() is a function that makes sure flares are a possible target for the ata
+# if a collision is detected, health is reduced accordingly
 def ata_fighter_seek():
     global ataf_active, p2, fighter_ata_cooldown
     if ataf_active:
@@ -479,6 +504,7 @@ def ata_fighter_borders(af):
             ata_fighter.setheading(turn_angle)
             ata_fighter.forward(30)
             
+# checks for whether the bullets shot from the jet hit the fighter, and reduces the health accordingly
 def red_bullet_collision(turt):
     if abs(turt[0].xcor() - fighter.xcor())<12 and abs(turt[0].ycor() - fighter.ycor()) <12:
         collision = True
@@ -488,6 +514,7 @@ def red_bullet_collision(turt):
         collision = False
     return collision
 
+# checks for whether the bullets shot from the fighter hit the jet, and reduces the health accordingly
 def black_bullet_collision(turt):
     if abs(turt[0].xcor() - jet.xcor())<12 and abs(turt[0].ycor() - jet.ycor()) <12:
         collision = True
@@ -496,7 +523,10 @@ def black_bullet_collision(turt):
     else:
         collision = False
     return collision
-    
+
+# if there are still inactive flares to use, this function sets the position of and heading of the flares
+# the used flares are then appended to the list of the jet's active flares and removed from the inactive list
+# flares are launched in groups of two
 def j_flares():
     if (len(inactive_jet_flares) > 0):
         launch_heading = 100
@@ -508,7 +538,8 @@ def j_flares():
         j_active_flares.append(inactive_jet_flares[0])
         inactive_jet_flares.remove(inactive_jet_flares[0])
         jet_HUD()
-    
+        
+# this function formats all the flares for the fighter as white circles
 def jet_flares_formatting():
     for turt_group in inactive_jet_flares:
         for turt in turt_group:
@@ -518,6 +549,9 @@ def jet_flares_formatting():
             turt.shapesize(.2,.2,.2)
             turt.goto(650,10)
 
+# for every flare group in the active flare list, the speed of the flares if checked if its under .65
+# if the speed is slower than .65, the flares are taken off screen, and made immobile
+# if the speed is higher than .65, then the speed is used the in forward() function, and then reduced by .99
 def j_flares_movement():
     global j_flare_active
     if len(j_active_flares) > 0:
@@ -535,6 +569,9 @@ def j_flares_movement():
                 turt.forward(.3*jet_flares_speed[group_loc])
                 jet_flares_speed[group_loc]*=.99
 
+# this function chooses which target the fighter's ata missiles lock onto 
+# all of the jet's active flares and the jet are added to a list of targets, 
+# and a target is randomly chosen from the list, causing the ata to go crazy
 def fighter_ata_lock():
     for flare_group in j_active_flares:
         for flare_inb in flare_group:
@@ -545,6 +582,9 @@ def fighter_ata_lock():
     fighter_ata_targets.clear()
     return f_ata_target
 
+# if there are still inactive flares to use, this function sets the position of and heading of the flares
+# the used flares are then appended to the list of the fighter's active flares and removed from the inactive list
+# flares are launched in groups of two
 def f_flares():
     if len(inactive_fighter_flares) > 0:
         launch_heading = 100
@@ -556,7 +596,8 @@ def f_flares():
         f_active_flares.append(inactive_fighter_flares[0])
         inactive_fighter_flares.remove(inactive_fighter_flares[0])
         fighter_HUD()
-    
+
+# this function formats all the flares for the fighter as white circles
 def fighter_flares_formatting():
     for turt_group in inactive_fighter_flares:
         for turt in turt_group:
@@ -566,6 +607,9 @@ def fighter_flares_formatting():
             turt.shapesize(.2,.2,.2)
             turt.goto(650,-10)
 
+# for every flare group in the active flare list, the speed of the flares if checked if its under .65
+# if the speed is slower than .65, the flares are taken off screen, and made immobile
+# if the speed is higher than .65, then the speed is used the in forward() function, and then reduced by .99
 def f_flares_movement():
     if len(f_active_flares)>0:
         for turt_group in f_active_flares:
@@ -582,7 +626,9 @@ def f_flares_movement():
                 turt.forward(.3*fighter_flares_speed[group_loc])
                 fighter_flares_speed[group_loc]*=.99
 
-    
+# this function chooses which target the jet's ata missiles lock onto 
+# all of the fighter's active flares and the fighter are added to a list of targets, 
+# and a target is randomly chosen from the list, causing the ata to go crazy
 def jet_ata_lock():
     for flare_group in f_active_flares:
         for flare_inb in flare_group:
@@ -593,6 +639,8 @@ def jet_ata_lock():
     jet_ata_targets.clear()
     return j_ata_target
 
+# this function tests whether the passed in turtle is in-bounds
+# it returns either true or false
 def turtle_inbound(turtl):
     x_inb = True
     y_inb = True
@@ -604,12 +652,14 @@ def turtle_inbound(turtl):
         return False
     elif x_inb==True or y_inb==True:
         return True
-
+        
+# prints the number of flares left for the jet on-screen
 def jet_HUD():
     j_hud_pen.clear()
     flare_info = 'flares: ' + str(len(inactive_jet_flares))
     j_hud_pen.write(flare_info, align="center", font=("Roboto", 17, "bold"))
-
+    
+# prints the number of flares left for the fighter on-screen
 def fighter_HUD():
     f_hud_pen.clear()
     flare_info = 'flares: ' + str(len(inactive_fighter_flares))
