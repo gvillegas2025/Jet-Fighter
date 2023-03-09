@@ -888,3 +888,4 @@ while(True):
         health_display(pp1,pp2)
 
 # Make sure yall have all the rotations of the plane downloaded on your computer
+# We could have put the planes in a list instead of making functions for both planes.
