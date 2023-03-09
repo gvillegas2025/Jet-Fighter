@@ -326,6 +326,7 @@ def winning():
         paused = True
         score.clear()
         score.color("red")
+        
         if jy > 0:
             score.goto(0,-250)
             score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
