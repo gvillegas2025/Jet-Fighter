@@ -292,7 +292,7 @@ def first_time_scoreboard():
     score.clear()
     jet_prompt = p_names[0]
     fighter_prompt = p_names[1]
-    score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
+    score_prompt = fighter_prompt + ": " +str(p2) + "      " + jet_prompt + ": " + str(p1)
     score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
     jet_HUD()
     fighter_HUD()
@@ -305,7 +305,7 @@ def health_display(pp1,pp2):
         score.clear()
         jet_prompt = p_names[0]
         fighter_prompt = p_names[1]
-        score_prompt = jet_prompt + ": " +str(p1) + "      " + fighter_prompt + ": " + str(p2)
+        score_prompt = fighter_prompt + ": " +str(p2) + "      " + jet_prompt + ": " + str(p1)
         score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
         winning()
 
@@ -325,6 +325,7 @@ def winning():
         ata_fighter.clear()
         paused = True
         score.clear()
+        score.color("red")
         
         if jy > 0:
             score.goto(0,-250)
@@ -821,13 +822,13 @@ j_hud_pen.color('black')
 j_hud_pen.shape('circle')
 j_hud_pen.shapesize(.05,.05,.05)
 j_hud_pen.pu()
-j_hud_pen.goto(-350,-375)
+j_hud_pen.goto(350,-375)
 f_hud_pen = Turtle()
 f_hud_pen.color('red')
 f_hud_pen.shape('circle')
 f_hud_pen.shapesize(.05,.05,.05)
 f_hud_pen.pu()
-f_hud_pen.goto(350,-375)
+f_hud_pen.goto(-350,-375)
 
 #call choosing names and the first time scoreboard
 choose_names()
