@@ -381,8 +381,8 @@ def ataj_activator():
         if jtimer_active == False:
             if jet_ata_cooldown == True:
                 ata_jet.hideturtle()
-                t = Timer(7, ataj_cooldown)
-                t.start()
+                jt = Timer(7, ataj_cooldown)
+                jt.start()
                 ataj_active = False
                 jtimer_active = True
 
@@ -483,8 +483,8 @@ def ataf_activator():
         if ftimer_active == False:
             if fighter_ata_cooldown == True:
                 ata_fighter.hideturtle()
-                t = Timer(7, ataf_cooldown)
-                t.start()
+                ft = Timer(7, ataf_cooldown)
+                ft.start()
                 ataf_active = False
                 ftimer_active = True
 
