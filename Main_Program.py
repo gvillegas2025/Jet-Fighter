@@ -6,6 +6,7 @@ from math import tan
 import re
 import random
 from threading import Timer
+from PIL import Image
 
 # Functions
 #all of the movement functions for the jet and fighter take the global variable paused
@@ -118,7 +119,7 @@ def jet_shoot():
             last_turtle.pu()
             last_turtle.shape('circle')
             last_turtle.color('red')
-            last_turtle.shapesize(.1,.1,.1)
+            last_turtle.shapesize(.2,.2,.2)
             last_turtle.goto(jet.xcor(),jet.ycor())
         elif len(jbullets)>=5:
             first_elem = jbullets[0]
@@ -140,11 +141,11 @@ def jet_bullet_moving():
         turt[0].pu()
         out_of_bounds = False
         if not turtle_inbound(turt[0]):
-            turt[0].goto(650,0)
+            turt[0].goto(1650,0)
             mover = 0
             out_of_bounds = True
         elif red_bullet_collision(turt):
-            turt[0].goto(650,0)
+            turt[0].goto(1650,0)
             mover = 0
             out_of_bounds = True
         else:
@@ -216,7 +217,7 @@ def fighter_shoot():
             last_turtle.setheading(fighter.heading())
             last_turtle.pu()
             last_turtle.shape('circle')
-            last_turtle.shapesize(.1,.1,.1)
+            last_turtle.shapesize(.2,.2,.2)
             last_turtle.goto(fighter.xcor(),fighter.ycor())
         elif len(fbullets)>=5:
             first_elem = fbullets[0]
@@ -238,13 +239,13 @@ def fighter_bullet_moving():
         turt[0].pu()
         out_of_bounds = False
         if not turtle_inbound(turt[0]):
-            turt[0].goto(650,0)
+            turt[0].goto(1650,0)
             mover = 0
             out_of_bounds = True
         elif black_bullet_collision(turt):
-            turt[0].goto(650,0)
+            turt[0].goto(1650,0)
             mover = 0
-            out_of_bounds = True
+            out_of_bounds = True 
         else:
             mover = BULLET_SPEED_MULTIPLIER
         if out_of_bounds or (turt[1]==True):
@@ -297,7 +298,7 @@ def first_time_scoreboard():
     jet_prompt = p_names[0]
     fighter_prompt = p_names[1]
     score_prompt = fighter_prompt + ": " +str(p2) + "      " + jet_prompt + ": " + str(p1)
-    score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
+    score.write (score_prompt, align="center", font=("Roboto", 40, "bold"))
     jet_HUD()
     fighter_HUD()
 
@@ -310,7 +311,7 @@ def health_display(pp1,pp2):
         jet_prompt = p_names[0]
         fighter_prompt = p_names[1]
         score_prompt = fighter_prompt + ": " +str(p2) + "      " + jet_prompt + ": " + str(p1)
-        score.write (score_prompt, align="center", font=("Roboto", 30, "bold"))
+        score.write (score_prompt, align="center", font=("Roboto", 40, "bold"))
         winning()
 
 #this function is called in health_display and takes the globals p1, p2, and paused.
@@ -333,10 +334,10 @@ def winning():
         
         if jy > 0:
             score.goto(0,-250)
-            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 75, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
         if jy <= 0:
             score.goto(0,200)
-            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 75, "bold"))
+            score.write(p_names[1]+" Wins!", align="center", font=("Courier", 100, "bold"))
 
     if p2 <= 0:
         fighter.shape('explosion.gif')
@@ -347,10 +348,10 @@ def winning():
         
         if fy > 0:
             score.goto(0,-250)
-            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 75, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
         if fy <= 0:
             score.goto(0,200)
-            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 75, "bold"))
+            score.write(p_names[0]+" Wins!", align="center", font=("Courier", 100, "bold"))
 
 #this function is called when the space bar is pressed. It changes the paused global
 #variable depending on the condition
@@ -363,6 +364,7 @@ def pause():
 
 #this function occers when shift+q is pressed. It asks the users if they want to quit
 def Quit():
+    global paused
     paused = True
     q = screen.textinput("Quit", "Are you sure you want to quit?(yes or no)")
     if re.match("^[y, Y]", q):
@@ -419,7 +421,7 @@ def ata_jet_follow():
         ata_jet.setheading(jet.heading())
         
 
-# to find the angle of which the ata should go, trigonometry is used. 
+# This function is used to find the angle of which the ata should go, trigonometry is used. 
 # using the x and y distance, and tangent, we can get the desired angle. 
 # the consecutive set of if statments is to make sure the ata is on the right course
 # jet_ata_lock() is a function that makes sure flares are a possible target for the ata
@@ -621,7 +623,7 @@ def jet_flares_formatting():
             turt.shape('circle')
             turt.color('white')
             turt.shapesize(.2,.2,.2)
-            turt.goto(650,10)
+            turt.goto(1650,10)
 
 # for every flare group in the active flare list, the speed of the flares if checked if its under .65
 # if the speed is slower than .65, the flares are taken off screen, and made immobile
@@ -633,8 +635,8 @@ def j_flares_movement():
             group_loc = j_active_flares.index(turt_group)
             breaker = False
             if (jet_flares_speed[group_loc] < 0.65): 
-                turt_group[0].goto(650,20)
-                turt_group[1].goto(650,20)
+                turt_group[0].goto(1650,20)
+                turt_group[1].goto(1650,20)
                 breaker = True
                 jet_flares_speed[group_loc] = 0
             for turt in turt_group:
@@ -683,7 +685,7 @@ def fighter_flares_formatting():
             turt.shape('circle')
             turt.color('white')
             turt.shapesize(.2,.2,.2)
-            turt.goto(650,-10)
+            turt.goto(1650,-10)
 
 # for every flare group in the active flare list, the speed of the flares if checked if its under .65
 # if the speed is slower than .65, the flares are taken off screen, and made immobile
@@ -694,8 +696,8 @@ def f_flares_movement():
             group_loc = f_active_flares.index(turt_group)
             breaker = False
             if (fighter_flares_speed[group_loc] < 0.65): 
-                turt_group[0].goto(650,20)
-                turt_group[1].goto(650,20)
+                turt_group[0].goto(1650,20)
+                turt_group[1].goto(1650,20)
                 breaker = True
                 fighter_flares_speed[group_loc] = 0
             for turt in turt_group:
@@ -735,13 +737,13 @@ def turtle_inbound(turtl):
 def jet_HUD():
     j_hud_pen.clear()
     flare_info = 'flares: ' + str(len(inactive_jet_flares))
-    j_hud_pen.write(flare_info, align="center", font=("Roboto", 17, "bold"))
+    j_hud_pen.write(flare_info, align="center", font=("Roboto", 25, "bold"))
     
 # prints the number of flares left for the fighter on-screen
 def fighter_HUD():
     f_hud_pen.clear()
     flare_info = 'flares: ' + str(len(inactive_fighter_flares))
-    f_hud_pen.write(flare_info, align="center", font=("Roboto", 17, "bold"))
+    f_hud_pen.write(flare_info, align="center", font=("Roboto", 25, "bold"))
 
 #this function asks the players for their usernames and puts them into a list
 def choose_names():
@@ -750,16 +752,12 @@ def choose_names():
     p2_name = screen.textinput("Player 2", "What is Player 2's name?(red jet)")
     p_names.append(p2_name)
 
-# Constants
-RIGHT_EDGE= 400
-LEFT_EDGE = -400
-BOTTOM_EDGE = -400
-TOP_EDGE = 400
+#Constants
 HEADING_STEP = 30
 FORWARD_SPEED = 6
 MAX_FLARE_NUM = 15
 ATA_SPEED_MULTIPLIER = 3
-BULLET_SPEED_MULTIPLIER = 3
+BULLET_SPEED_MULTIPLIER = 5
 
 # Global Variables
 jetturningangle = 0
@@ -791,13 +789,13 @@ score=turtle.Turtle()
 score.speed(0)
 score.penup()
 score.hideturtle()
-score.goto (0,300)
+
 
 jet_cooldown = Turtle()
 jet_cooldown.speed(0)
 jet_cooldown.pu()
 jet_cooldown.hideturtle()
-jet_cooldown.goto(-300, 305)
+jet_cooldown.goto(-1000, 1305)
 jet_cooldown.color("black")
 
 fighter_cooldown = Turtle()
@@ -805,7 +803,7 @@ fighter_cooldown.speed(0)
 fighter_cooldown.pu()
 fighter_cooldown.hideturtle()
 fighter_cooldown.color("red")
-fighter_cooldown.goto(300, 305)
+fighter_cooldown.goto(1000, 1305)
 
 #lists
 jetturn = ["Jet30.gif", "Jet60.gif", "Jet90.gif", "Jet120.gif", "Jet150.gif", "Jet180.gif", "Jet210.gif", "Jet240.gif", "Jet270.gif", "Jet300.gif", "Jet330.gif", "Jet0.gif"]
@@ -826,13 +824,31 @@ fighter_ata_targets = []
 p_names = []
 
 #Create the Screen and explosion shape
-screen = Screen()
-screen.setup(800,800)
-screen.title("Jet Fighter")
-screen.bgcolor("skyblue")
-turtle.bgpic(picname="Sky.gif")
-screen.tracer(0)
 turtle.addshape(name="explosion.gif", shape=None)
+screen = Screen()
+screenTk = screen.getcanvas().winfo_toplevel()
+screenTk.attributes("-fullscreen", True)
+screen.title("Jet Fighter")
+screen.bgcolor("sky blue")
+screen.tracer(0)
+height = screen.getcanvas().winfo_height()
+width = screen.getcanvas().winfo_width()
+# resize the image with width and height of screen
+image = Image.open("Sky.gif")
+w = width
+h = height+400
+newimage = image.resize((w, h))
+newimage.save('Sky.gif')
+screen.bgpic(picname="Sky.gif")
+TK_SILENCE_DEPRECATION=1
+score.goto(0,((height/2)-((height/2)*.3)))
+
+#Size Constants
+RIGHT_EDGE= width/2
+LEFT_EDGE = width/-2
+BOTTOM_EDGE = height/-2
+TOP_EDGE = height/2
+
 
 #Create the Turtles
 jet = Turtle()
@@ -865,15 +881,15 @@ fighter_flares_formatting()
 j_hud_pen = Turtle()
 j_hud_pen.color('black')
 j_hud_pen.shape('circle')
-j_hud_pen.shapesize(.05,.05,.05)
+j_hud_pen.shapesize(.01,.01,.01)
 j_hud_pen.pu()
-j_hud_pen.goto(350,-375)
+j_hud_pen.goto(((width/2)-((width/2)*.2)),((height/-2)+((height/2)*.15)))
 f_hud_pen = Turtle()
 f_hud_pen.color('red')
 f_hud_pen.shape('circle')
-f_hud_pen.shapesize(.05,.05,.05)
+f_hud_pen.shapesize(.01,.01,.01)
 f_hud_pen.pu()
-f_hud_pen.goto(-350,-375)
+f_hud_pen.goto(((width/-2)+(width/2)*.2),((height/-2)+((height/2)*.15)))
 
 #call choosing names and the first time scoreboard
 choose_names()
